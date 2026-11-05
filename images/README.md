@@ -34,7 +34,23 @@ images/
 bash images/download-images.sh
 ```
 
-脚本会把下面映射表里的角色图标批量下载到 `images/`，已存在的文件自动跳过。
+脚本会把 **全部 126 个角色**的图标并发下载到 `images/`，已存在的文件自动跳过。
+
+```bash
+JOBS=3 bash images/download-images.sh   # 网络不好时降低并发
+```
+
+实测 126 张全部成功约需 1 分 13 秒，合计约 9.3MB；重复执行会全部跳过。
+
+### 映射表从哪来
+
+脚本里的 `角色id:图标名` 映射**由 `data.js` 的 `icon` 字段自动生成**，不是手写的。以后新增角色，只要 `data.js` 里填了 `icon`（官方图标文件名），重新生成脚本即可覆盖到：
+
+```bash
+node images/build-download-script.js   # 重新生成 download-images.sh
+```
+
+> 历史坑：雷电将军的图标名是 `Shougun` 而不是 `Raiden`，艾尔海森是 `Alhatham`（少一个 a）。这些人肉容易写错的地方，现在由数据集直接提供，不会再错。
 
 ## 图片来源
 
