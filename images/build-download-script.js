@@ -160,3 +160,101 @@ echo "全部完成。刷新浏览器即可看到角色头像。"
 
 fs.writeFileSync(path.join(root, 'images', 'download-images.sh'), script, { mode: 0o755 });
 console.log(`已生成 images/download-images.sh，含 ${chars.length} 个角色`);
+
+/* ============================================================
+ * 第二部分：圣遗物图标
+ * 命名规则：UI_RelicIcon_{套装ID}_{部位序号}.png
+ *   部位序号 1 生之花 / 2 死之羽 / 3 时之沙 / 4 空之杯 / 5 理之冠
+ * 落盘位置：images/artifacts/{套装ID}_{部位序号}.png
+ * 注意：单件套（如「祭火之人」只有时之沙）本身只有序号 3 的图标，其余 404 属正常。
+ * ============================================================ */
+const sets = D.ARTIFACT_SETS;
+const relicJobs = [];
+sets.forEach(s => [1, 2, 3, 4, 5].forEach(k => relicJobs.push({ sid: s.id, k, name: s.name })));
+
+const relicScript = `#!/usr/bin/env bash
+# ============================================================
+# 批量下载圣遗物图标（${sets.length} 个套装 × 5 个部位，共 ${relicJobs.length} 个任务）
+# 用法：在项目根目录执行
+#   bash images/download-artifact-icons.sh
+#
+# 说明：
+#   - 落盘到 images/artifacts/{套装ID}_{部位}.png
+#   - 已存在且是有效 PNG 的自动跳过，可重复执行
+#   - 单件套（只有时之沙的「祭火之人」等）其余部位本来就没有图标，会记为 SKIP
+#
+# 图片版权归米哈游所有。.gitignore 默认排除 images/artifacts/。
+# ============================================================
+set -u
+cd "$(dirname "$0")" || exit 1
+mkdir -p artifacts
+
+BASE="https://enka.network/ui/UI_RelicIcon_"
+UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"
+JOBS="\${JOBS:-8}"
+
+MAP=$(cat <<'MAPEOF'
+${relicJobs.map(j => `  ${j.sid}_${j.k}   # ${j.name}`).join('\n')}
+MAPEOF
+)
+
+is_png() {
+  [ -f "$1" ] && [ "$(head -c 8 "$1" | od -An -tx1 | tr -d ' \\n')" = "89504e470d0a1a0a" ]
+}
+
+fetch_one() {
+  local key="$1" out="artifacts/$1.png"
+  if is_png "$out"; then echo "SKIP $key"; return; fi
+  local attempt
+  for attempt in 1 2 3; do
+    if curl -sL -f --connect-timeout 10 --max-time 60 \\
+        -H "User-Agent: $UA" -o "$out" "\${BASE}\${key}.png" 2>/dev/null && is_png "$out"; then
+      echo "OK $key $(wc -c < "$out" | tr -d ' ')"
+      return
+    fi
+    [ "$attempt" -lt 3 ] && sleep 2
+  done
+  rm -f "$out"
+  echo "SKIP $key"
+}
+export -f fetch_one is_png
+export BASE UA
+
+echo "开始下载圣遗物图标（共 ${relicJobs.length} 个，并发 $JOBS）…"
+TASKS=$(printf '%s\\n' "$MAP" | sed 's/#.*//' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | grep -v '^$')
+
+RESULT_FILE=".dl-relic.$$"
+: > "$RESULT_FILE"
+trap 'rm -f "$RESULT_FILE"' EXIT
+
+BATCH=""; CNT=0
+flush_batch() {
+  local item
+  for item in $BATCH; do fetch_one "$item" >> "$RESULT_FILE" 2>&1 & done
+  wait
+  BATCH=""; CNT=0
+}
+while IFS= read -r line; do
+  [ -z "$line" ] && continue
+  BATCH="$BATCH $line"; CNT=$((CNT+1))
+  [ "$CNT" -ge "$JOBS" ] && flush_batch
+done <<< "$TASKS"
+[ "$CNT" -gt 0 ] && flush_batch
+
+OK=0; SKIP=0
+while read -r status key extra; do
+  case "$status" in
+    OK) OK=$((OK+1)) ;;
+    SKIP) SKIP=$((SKIP+1)) ;;
+  esac
+done < "$RESULT_FILE"
+
+echo ""
+echo "————————————————————————————"
+echo "成功 $OK 张 / 跳过 $SKIP 张（单件套无该部位图标属正常）"
+echo "当前 images/artifacts/ 下共有 $(ls artifacts/*.png 2>/dev/null | wc -l | tr -d ' ') 张"
+echo "刷新浏览器即可看到圣遗物图标（本地缺图会自动回落到 Enka CDN）。"
+`;
+
+fs.writeFileSync(path.join(root, 'images', 'download-artifact-icons.sh'), relicScript, { mode: 0o755 });
+console.log(`已生成 images/download-artifact-icons.sh，含 ${relicJobs.length} 个任务`);

@@ -136,3 +136,51 @@ https://enka.network/ui/UI_AvatarIcon_Hutao.png
   （`.gitignore` 里已经默认忽略 `images/*.png`，只保留说明文件）
 
 如果你要用 GitHub Pages 在线展示图片，需要把图片一起提交上去，这个风险请自行权衡。
+
+---
+
+# 圣遗物图标目录 `images/artifacts/`
+
+「我的背包」用图标网格陈列圣遗物，图标放在 `images/artifacts/` 下（子目录）。
+**本地缺图会自动回落到 Enka 的图标 CDN，再失败则显示部位 emoji，不会出现裂图。**
+
+## 命名规范
+
+```
+images/artifacts/{套装ID}_{部位序号}.png
+```
+
+| 部位序号 | 部位 |
+|---|---|
+| 1 | 生之花 |
+| 2 | 死之羽 |
+| 3 | 时之沙 |
+| 4 | 空之杯 |
+| 5 | 理之冠 |
+
+套装 ID 就是 `data.js` 里 `ARTIFACT_SETS` 的 `id` 字段，例如：
+
+```
+images/artifacts/15001_1.png   → 角斗士的终幕礼 · 生之花
+images/artifacts/15009_3.png   → 祭火之人 · 时之沙
+```
+
+## 一键下载
+
+```bash
+bash images/download-artifact-icons.sh
+JOBS=4 bash images/download-artifact-icons.sh   # 网络不好时降并发
+```
+
+63 个套装 × 5 个部位 = 315 个任务，实际只有 **299 张**有图标：
+「祭火之人 / 祭水之人 / 祭雷之人 / 祭冰之人」是只有时之沙的**单件套**，
+其余四个部位在官方资源里本来就不存在，脚本会记为跳过，属正常现象。
+
+脚本同样由 `data.js` 生成映射，套装修正后重新生成即可：
+
+```bash
+node images/build-download-script.js
+```
+
+来源同为 `https://enka.network/ui/UI_RelicIcon_{套装ID}_{部位序号}.png`。
+版权归米哈游所有，`.gitignore` 已忽略 `images/artifacts/*.png`。

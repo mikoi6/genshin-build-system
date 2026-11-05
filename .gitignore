@@ -8,3 +8,4 @@ Thumbs.db
 # 角色图片版权归米哈游所有，默认不提交到公开仓库
 # 如需 GitHub Pages 在线展示图片，注释掉下面这行
 images/*.png
+images/artifacts/*.png

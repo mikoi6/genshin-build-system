@@ -263,18 +263,86 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--te
   border-radius: 4px; padding: 1px 6px; height: fit-content;
 }
 
-/* ============ 圣遗物列表 ============ */
-.artifact-list { display: flex; flex-direction: column; gap: 8px; }
-.artifact-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 14px; border: 1px solid var(--border);
-  border-radius: var(--radius-sm); background: var(--bg-panel);
+/* ============ 圣遗物：图标网格陈列 ============ */
+.relic-grid {
+  display: grid; gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(94px, 1fr));
 }
-.artifact-item .slot-icon { font-size: 22px; width: 36px; text-align: center; }
-.artifact-item .main { flex: 1; min-width: 0; }
-.artifact-item .set-name { font-weight: 600; }
-.artifact-item .subs { font-size: 12px; color: var(--text-secondary); }
-.artifact-item .actions { display: flex; gap: 4px; flex-shrink: 0; }
+.relic-tile {
+  position: relative; display: flex; flex-direction: column; align-items: center;
+  gap: 2px; padding: 8px 4px 7px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-panel); color: var(--text); cursor: pointer;
+  transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+.relic-tile:hover, .relic-tile:focus-visible {
+  border-color: var(--accent); box-shadow: var(--shadow-md);
+  transform: translateY(-1px); outline: none;
+}
+.relic-pic {
+  position: relative; width: 60px; height: 60px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; background: var(--accent-soft); overflow: hidden;
+}
+.relic-pic img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.relic-pic .relic-fallback { font-size: 26px; line-height: 1; }
+.relic-lv {
+  position: absolute; right: 2px; bottom: 2px; z-index: 2;
+  font-size: 10px; font-weight: 700; line-height: 1.4;
+  padding: 0 3px; border-radius: 5px;
+  background: var(--bg-panel); border: 1px solid var(--border); color: var(--text-secondary);
+}
+.relic-lock {
+  position: absolute; right: 3px; top: 3px; z-index: 3; font-size: 9px; line-height: 1;
+  padding: 1px 2px; border-radius: 4px;
+  background: var(--gold); color: #fff; opacity: .92;
+}
+.relic-main {
+  font-size: 12px; font-weight: 700; color: var(--accent-text);
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-variant-numeric: tabular-nums; line-height: 1.3;
+}
+.relic-key {
+  font-size: 10px; color: var(--text-secondary);
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.relic-set {
+  font-size: 10px; color: var(--text-tertiary); line-height: 1.25;
+  max-width: 100%; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+.bag-summary {
+  display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px;
+  color: var(--text-secondary); margin-top: 10px;
+}
+.bag-summary b { color: var(--text); font-weight: 600; }
+
+/* 详情弹窗里的圣遗物大图与词条 */
+.relic-hero { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; }
+.relic-hero .pic {
+  width: 84px; height: 84px; flex-shrink: 0; border-radius: 10px;
+  background: var(--accent-soft); display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.relic-hero .pic img { width: 100%; height: 100%; object-fit: contain; }
+.relic-hero .pic .relic-fallback { font-size: 36px; }
+.relic-hero .title { font-size: 15px; font-weight: 600; line-height: 1.35; }
+.relic-hero .sub { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+.stat-line {
+  display: flex; justify-content: space-between; gap: 10px;
+  padding: 6px 0; border-bottom: 1px dashed var(--border-light); font-size: 13px;
+}
+.stat-line:last-child { border-bottom: none; }
+.stat-line .k { color: var(--text-secondary); }
+.stat-line .v { font-weight: 600; font-variant-numeric: tabular-nums; }
+.set-effect { font-size: 13px; line-height: 1.6; margin-top: 4px; }
+.set-effect .pc { font-weight: 600; color: var(--accent-text); margin-right: 4px; }
+.detail-block { margin-top: 16px; }
+.detail-block h4 {
+  font-size: 12px; font-weight: 600; color: var(--text-tertiary);
+  letter-spacing: .04em; margin-bottom: 6px;
+}
 
 /* ============ 详情/推荐 ============ */
 .build-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 14px; }
@@ -350,7 +418,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--te
 <body data-theme="light">
 <header class="app-header no-print">
   <div class="header-inner">
-    <div class="app-title"><span class="logo">⚔️</span> 原神角色养成系统 <small>v2.3.0</small></div>
+    <div class="app-title"><span class="logo">⚔️</span> 原神角色养成系统 <small>v2.4.0</small></div>
     <nav class="nav-tabs" id="navTabs">
       <button class="nav-tab active" data-page="characters">角色库</button>
       <button class="nav-tab" data-page="bag">我的背包</button>
@@ -797,6 +865,29 @@ const SLOT_INFO = {
   circlet: { label: '理之冠', icon: '👑' },
 };
 
+const SLOT_ICON_IDX = { flower: 1, plume: 2, sands: 3, goblet: 4, circlet: 5 };
+const SET_ID_BY_NAME = (() => {
+  const m = {};
+  DATA.ARTIFACT_SETS.forEach(s => { m[s.name] = s.id; });
+  return m;
+})();
+const RELIC_CDN = 'https://enka.network/ui/UI_RelicIcon_';
+
+/* 圣遗物图标：优先用本地 images/artifacts/{套装ID}_{部位}.png，
+ * 本地没有就回落到 Enka 官方图标 CDN，再失败则显示部位 emoji */
+function relicIconHTML(a) {
+  const sid = SET_ID_BY_NAME[a.setName];
+  const idx = SLOT_ICON_IDX[a.slot];
+  const si = SLOT_INFO[a.slot] || { icon: '❔' };
+  if (!sid || !idx) return `<span class="relic-fallback">${si.icon}</span>`;
+  const local = `images/artifacts/${sid}_${idx}.png`;
+  const cdn = `${RELIC_CDN}${sid}_${idx}.png`;
+  return `<span class="relic-fallback">${si.icon}</span>
+    <img src="${local}" alt="${esc(a.setName)}" loading="lazy"
+      onload="this.previousElementSibling.style.display='none'"
+      onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='${cdn}'}else{this.remove()}">`;
+}
+
 function renderBagReal() {
   const page = $('#page-bag');
   let list = state.artifacts.filter(a => {
@@ -807,6 +898,9 @@ function renderBagReal() {
 
   const setOpts = DATA.ARTIFACT_SETS.map(s => `<option value="${esc(s.name)}" ${bagFilter.set===s.name?'selected':''}>${esc(s.name)}</option>`).join('');
   const slotOpts = Object.entries(SLOT_INFO).map(([k, v]) => `<option value="${k}" ${bagFilter.slot===k?'selected':''}>${v.label}</option>`).join('');
+
+  const setCount = new Set(state.artifacts.map(a => a.setName)).size;
+  const lockedCount = state.artifacts.filter(a => a.locked).length;
 
   page.innerHTML = `
     <div class="panel panel-body" style="margin-bottom:16px">
@@ -821,8 +915,14 @@ function renderBagReal() {
         <select id="bagSet"><option value="">全部套装</option>${setOpts}</select>
         <select id="bagSlot"><option value="">全部部位</option>${slotOpts}</select>
       </div>
+      <div class="bag-summary">
+        <span>当前筛选 <b>${list.length}</b> 件</span>
+        <span>涉及套装 <b>${setCount}</b> 种</span>
+        <span>已锁定 <b>${lockedCount}</b> 件</span>
+        <span class="hint">点任意图标查看词条与套装效果</span>
+      </div>
     </div>
-    ${list.length ? `<div class="artifact-list">${list.map(renderArtifactItem).join('')}</div>`
+    ${list.length ? `<div class="panel panel-body"><div class="relic-grid">${list.map(renderArtifactTile).join('')}</div></div>`
       : `<div class="panel"><div class="empty-state"><div class="icon">🎒</div>${state.artifacts.length ? '没有匹配的圣遗物' : '还没有录入圣遗物，点上方按钮开始'}</div></div>`}`;
 
   $('#addArtifact').addEventListener('click', () => openArtifactModal());
@@ -830,40 +930,111 @@ function renderBagReal() {
   $('#bagSet').addEventListener('change', e => { bagFilter.set = e.target.value; renderBagReal(); });
   $('#bagSlot').addEventListener('change', e => { bagFilter.slot = e.target.value; renderBagReal(); });
 
-  $$('.artifact-item', page).forEach(item => {
-    item.querySelector('[data-act="edit"]').addEventListener('click', () => openArtifactModal(item.dataset.id));
-    item.querySelector('[data-act="del"]').addEventListener('click', () => deleteArtifact(item.dataset.id));
-    item.querySelector('[data-act="lock"]').addEventListener('click', () => toggleLock(item.dataset.id));
+  $$('.relic-tile', page).forEach(tile => {
+    const open = () => openRelicDetail(tile.dataset.id);
+    tile.addEventListener('click', open);
+    tile.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    });
   });
 }
 
-function renderArtifactItem(a) {
+function renderArtifactTile(a) {
   const si = SLOT_INFO[a.slot] || { label: a.slot, icon: '❔' };
   return `
-    <div class="artifact-item" data-id="${a.id}">
-      <div class="slot-icon">${si.icon}</div>
-      <div class="main">
-        <div class="set-name">${esc(a.setName)} · ${si.label} ${a.locked ? '🔒' : ''}</div>
-        <div class="hint">主词条：<strong style="color:var(--accent-text)">${esc(a.mainStat.key)}</strong> ${esc(a.mainStat.value)} · Lv.${a.level}</div>
-        <div class="subs">${a.subStats.map(s => `${esc(s.key)} ${esc(s.value)}`).join(' / ') || '无副词条'}</div>
-      </div>
-      <div class="actions">
-        <button class="btn btn-sm" data-act="lock">${a.locked ? '解锁' : '锁定'}</button>
-        <button class="btn btn-sm" data-act="edit">编辑</button>
-        <button class="btn btn-sm btn-danger" data-act="del">删除</button>
-      </div>
+    <div class="relic-tile" data-id="${a.id}" role="button" tabindex="0"
+         title="${esc(a.setName)} · ${esc(si.label)} · Lv.${a.level}">
+      ${a.locked ? '<span class="relic-lock">🔒</span>' : ''}
+      <span class="relic-pic">
+        ${relicIconHTML(a)}
+        <span class="relic-lv">+${a.level}</span>
+      </span>
+      <span class="relic-main">${esc(a.mainStat.value)}</span>
+      <span class="relic-key">${esc(a.mainStat.key)}</span>
+      <span class="relic-set">${esc(a.setName)}</span>
     </div>`;
 }
 
-function deleteArtifact(id) {
-  if (!confirm('确定删除这件圣遗物吗？')) return;
-  state.artifacts = state.artifacts.filter(a => a.id !== id);
-  save(); renderBagReal(); refreshDependent();
+/* 副词条双爆分：暴击率×2 + 暴击伤害（原神社区常用评分口径，只看副词条） */
+function critValueOf(a) {
+  let cr = 0, cd = 0, hit = false;
+  (a.subStats || []).forEach(s => {
+    const v = parseFloat(String(s.value).replace(/[^0-9.]/g, ''));
+    if (isNaN(v)) return;
+    if (s.key === '暴击率') { cr += v; hit = true; }
+    if (s.key === '暴击伤害') { cd += v; hit = true; }
+  });
+  return hit ? { cr, cd, cv: cr * 2 + cd } : null;
 }
 
-function toggleLock(id) {
+function openRelicDetail(id) {
   const a = state.artifacts.find(x => x.id === id);
-  if (a) { a.locked = !a.locked; save(); renderBagReal(); }
+  if (!a) return;
+  const si = SLOT_INFO[a.slot] || { label: a.slot };
+  const set = DATA.ARTIFACT_SETS.find(s => s.name === a.setName);
+  const cv = critValueOf(a);
+
+  const subRows = (a.subStats && a.subStats.length)
+    ? a.subStats.map(s => `<div class="stat-line"><span class="k">${esc(s.key)}</span><span class="v">${esc(s.value)}</span></div>`).join('')
+    : `<div class="hint">未填写副词条</div>`;
+
+  const effectHtml = set
+    ? `<div class="set-effect"><span class="pc">2 件套</span>${esc(set.effects.two || '—')}</div>
+       <div class="set-effect"><span class="pc">4 件套</span>${esc(set.effects.four || '—')}</div>`
+    : `<div class="hint">未找到该套装的效果数据</div>`;
+
+  $('#modalBox').innerHTML = `
+    <div class="modal-head">
+      <span>圣遗物详情</span>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="relic-hero">
+        <span class="pic">${relicIconHTML(a)}</span>
+        <div style="min-width:0">
+          <div class="title">${esc(a.setName)}</div>
+          <div class="sub">${esc(si.label)} · Lv.${a.level} ${a.locked ? '· 🔒 已锁定' : ''}</div>
+          <div class="sub">主词条：<strong style="color:var(--accent-text)">${esc(a.mainStat.key)} ${esc(a.mainStat.value)}</strong></div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <h4>副词条</h4>
+        ${subRows}
+      </div>
+
+      ${cv ? `<div class="detail-block">
+        <h4>副词条双爆分</h4>
+        <div class="stat-line"><span class="k">暴击率 ${cv.cr.toFixed(1)}% × 2 + 暴击伤害 ${cv.cd.toFixed(1)}%</span><span class="v">${cv.cv.toFixed(1)}</span></div>
+        <div class="hint" style="margin-top:6px">仅统计副词条，社区常用 30+ 视为可用、40+ 视为优秀</div>
+      </div>` : ''}
+
+      <div class="detail-block">
+        <h4>套装效果</h4>
+        ${effectHtml}
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="relicLock">${a.locked ? '🔓 解锁' : '🔒 锁定'}</button>
+      <button class="btn btn-danger" id="relicDel">删除</button>
+      <button class="btn" id="relicClose">关闭</button>
+      <button class="btn btn-primary" id="relicEdit">编辑</button>
+    </div>`;
+
+  $('#modalMask').classList.add('open');
+  $('#modalClose').addEventListener('click', closeModal);
+  $('#relicClose').addEventListener('click', closeModal);
+  $('#modalMask').addEventListener('click', e => { if (e.target === $('#modalMask')) closeModal(); });
+  $('#relicEdit').addEventListener('click', () => { closeModal(); openArtifactModal(a.id); });
+  $('#relicLock').addEventListener('click', () => { a.locked = !a.locked; save(); closeModal(); renderBagReal(); });
+  $('#relicDel').addEventListener('click', () => { if (deleteArtifact(a.id)) closeModal(); });
+}
+
+function deleteArtifact(id) {
+  if (!confirm('确定删除这件圣遗物吗？')) return false;
+  state.artifacts = state.artifacts.filter(a => a.id !== id);
+  save(); renderBagReal(); refreshDependent();
+  return true;
 }
 
 /* ---- 录入/编辑模态框 ---- */
@@ -1572,7 +1743,7 @@ function renderSettingsReal() {
     <div class="panel panel-body" style="margin-top:16px">
       <div class="section-title">关于</div>
       <div class="hint" style="line-height:1.8">
-        原神角色养成系统 v2.3.0<br>
+        原神角色养成系统 v2.4.0<br>
         覆盖角色 ${DATA.CHARACTERS.length} 个 · 圣遗物套装 ${DATA.ARTIFACT_SETS.length} 套 · 武器 ${Object.keys(DATA.WEAPONS).length} 把<br>
         数据基于公开攻略整理，随游戏版本变化，仅供参考<br>
         个人自用工具，与米哈游无关联
