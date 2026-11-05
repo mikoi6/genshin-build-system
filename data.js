@@ -1480,7 +1480,11 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '行幡鸣弦', E: '羽画·风姿华歌', Q: '狂言·式乐五番' },
       conNames: ['初番·茂风流羽行', '二番·箙岛廓白浪', '三番·久世舞夕颜', '四番·花月歌浮舟', '末番·今昔渡来殿', '祝言·霞幕倾松风'],
       desc: '身份成谜的流浪人士。衣着打扮像是修验者，言行却并不是修验者应有的模样。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '班钟法', role: '主C', teammates: ['珐露珊', '班尼特', '钟离'], strategy: '最稳的一套：珐露珊无条件减 30% 风抗并给风伤增伤，班尼特补攻击与回血且染火再给 30% 攻击，钟离 20 秒护盾保证站场不被打断。', artifact: { setIds: ['沙上楼阁史话'], type: '4件套', mainStats: { sands: '攻击%', goblet: '风伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '图莱杜拉的回忆', note: '专武，674 白值+44% 暴伤+攻速与普攻增伤' }], alternatives: [{ name: '天空之卷', note: '补攻击乘区，可解放班尼特' }, { name: '四风原典', note: '高暴击，注意与突破暴击溢出' }, { name: '尘世之锁', note: '高攻击，需护盾' }] }, talents: { priority: ['A', 'Q', 'E'], goal: { A: 10, E: 8, Q: 8 } }, source: { title: '千字流浪者攻略，推荐来自六个版本使用经验', url: 'https://www.miyoushe.com/ys/article/41670935', date: '2023-07-25' } },
+      { name: '莱依拉染冰', role: '主C', teammates: ['珐露珊', '莱依拉', '班尼特'], strategy: '莱依拉护盾覆盖足够，且染冰额外提供 20% 暴击，大招脱手补伤害；比钟离更省一个强力五星位。', artifact: { setIds: ['沙上楼阁史话'], type: '4件套', mainStats: { sands: '攻击%', goblet: '风伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '图莱杜拉的回忆', note: '专武，674 白值+44% 暴伤+攻速与普攻增伤' }], alternatives: [{ name: '天空之卷', note: '补攻击乘区，可解放班尼特' }, { name: '四风原典', note: '高暴击，注意与突破暴击溢出' }, { name: '尘世之锁', note: '高攻击，需护盾' }] }, talents: { priority: ['A', 'Q', 'E'], goal: { A: 10, E: 8, Q: 8 } }, source: { title: '千字流浪者攻略，推荐来自六个版本使用经验', url: 'https://www.miyoushe.com/ys/article/41670935', date: '2023-07-25' } },
+      { name: '云堇攻速', role: '主C', teammates: ['珐露珊', '云堇', '钟离'], strategy: '云堇提供攻速与普攻增伤，是普攻角色配队最优解之一，可解放班尼特给另一队；钟离负责生存。', artifact: { setIds: ['沙上楼阁史话'], type: '4件套', mainStats: { sands: '攻击%', goblet: '风伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '图莱杜拉的回忆', note: '专武，674 白值+44% 暴伤+攻速与普攻增伤' }], alternatives: [{ name: '天空之卷', note: '补攻击乘区，可解放班尼特' }, { name: '四风原典', note: '高暴击，注意与突破暴击溢出' }, { name: '尘世之锁', note: '高攻击，需护盾' }] }, talents: { priority: ['A', 'Q', 'E'], goal: { A: 10, E: 8, Q: 8 } }, source: { title: '千字流浪者攻略，推荐来自六个版本使用经验', url: 'https://www.miyoushe.com/ys/article/41670935', date: '2023-07-25' } }
+    ] },
     { id: 'yumemizukimizuki',
       name: '梦见月瑞希',
       title: '绮梦缱绻',
@@ -2913,7 +2917,9 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '直率的辞绝', E: '典仪式晶火', Q: '如霰澄天的鸣礼' },
       conNames: ['淑女的距离感守则', '总指挥的乘胜追击', '经营家的开阔视野', '铭誓者的绝不姑息', '协商人的坚决谈判', '刺玫会长的灵活手腕'],
       desc: '刺玫会现任会长，一位可爱、尽责的好老板。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '芙宁娜爆发', role: '主C', teammates: ['芙宁娜', '班尼特', '希诺宁'], strategy: '娜维娅攒满弹片再开 E 打爆发：希诺宁减抗并提供结晶，班尼特加攻兼治疗，芙宁娜全域增伤，大数字最爽的一套。', artifact: { setIds: ['回声之林夜话'], type: '4件套', mainStats: { sands: '攻击%', goblet: '岩伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '裁断', note: '专武，综合最优' }], alternatives: [{ name: '苇海信标', note: '暴击率副词条，生命转攻击' }, { name: '狼的末路', note: '攻击副词条，全队攻击加成' }, { name: '螭骨剑', note: '四星最优，精 5 与专武差距小' }, { name: '浪影阔剑', note: '四星锻造，过渡可用' }, { name: '「究极霸王超级魔剑」', note: '活动赠送' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 8, E: 9, Q: 8 } }, source: { title: '【V5.6】娜维娅培养攻略及抽取建议', url: 'https://www.miyoushe.com/ys/article/64272980', date: '2025-05-09' } }
+    ] },
     { id: 'chiori',
       name: '千织',
       title: '鸣雷的裁锦师',
@@ -3164,7 +3170,12 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '金匮针解', E: '太素诊要', Q: '愈气全形论' },
       conNames: ['呿吟至微', '动静精明', '八正定气', '法古观冥', '盈虚藏象', '真邪合离'],
       desc: '药庐「不卜庐」的主人，随身悬着名为「长生」的白蛇。精于药石，深于城府。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '那芙万白', role: '辅助', teammates: ['那维莱特', '芙宁娜', '枫原万叶'], strategy: '白术单靠战技的全队瞬抬就能当芙宁娜队的治疗位，尤其适配 1 命那维莱特；万叶聚怪扩散减抗，芙宁娜全域增伤。', artifact: { setIds: ['昔时之歌'], type: '4件套', mainStats: { sands: '生命%/元素充能效率', goblet: '生命%', circlet: '治疗加成/生命%' }, subStats: ['生命%', '元素充能效率'] }, weapon: { primary: [{ name: '碧落之珑', note: '专武，生存与循环体验最佳' }], alternatives: [{ name: '试作金珀', note: '锻造，更契合芙宁娜且性价比高' }, { name: '讨龙英杰谭', note: '三星，切人加攻，充能需求高（约 240%）' }, { name: '西风秘典', note: '暴击产球，缓解全队充能' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 8, Q: 8 } }, source: { title: '【V4.6攻略·角色攻略】白术攻略·机制/养成/配队', url: 'https://www.miyoushe.com/ys/article/52845613', date: '2024-05-14' } },
+      { name: '刻皇万白', role: '辅助', teammates: ['刻晴', '菲谢尔', '枫原万叶'], strategy: '双雷激化队：菲谢尔后台挂雷，万叶扩散减抗，白术提供治疗、抗打断与后台少量挂草，让刻晴站场更稳。', artifact: { setIds: ['昔时之歌'], type: '4件套', mainStats: { sands: '生命%/元素充能效率', goblet: '生命%', circlet: '治疗加成/生命%' }, subStats: ['生命%', '元素充能效率'] }, weapon: { primary: [{ name: '碧落之珑', note: '专武，生存与循环体验最佳' }], alternatives: [{ name: '试作金珀', note: '锻造，更契合芙宁娜且性价比高' }, { name: '讨龙英杰谭', note: '三星，切人加攻，充能需求高（约 240%）' }, { name: '西风秘典', note: '暴击产球，缓解全队充能' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 8, Q: 8 } }, source: { title: '【V4.6攻略·角色攻略】白术攻略·机制/养成/配队', url: 'https://www.miyoushe.com/ys/article/52845613', date: '2024-05-14' } },
+      { name: '八芙纳白', role: '辅助', teammates: ['八重神子', '芙宁娜', '纳西妲'], strategy: '双草激绽队：纳西妲挂草给精通，芙宁娜全域增伤并持续挂水，八重神子后台雷伤触发激化与绽放，白术负责治疗与抗打断。', artifact: { setIds: ['昔时之歌'], type: '4件套', mainStats: { sands: '生命%/元素充能效率', goblet: '生命%', circlet: '治疗加成/生命%' }, subStats: ['生命%', '元素充能效率'] }, weapon: { primary: [{ name: '碧落之珑', note: '专武，生存与循环体验最佳' }], alternatives: [{ name: '试作金珀', note: '锻造，更契合芙宁娜且性价比高' }, { name: '讨龙英杰谭', note: '三星，切人加攻，充能需求高（约 240%）' }, { name: '西风秘典', note: '暴击产球，缓解全队充能' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 8, Q: 8 } }, source: { title: '【V4.6攻略·角色攻略】白术攻略·机制/养成/配队', url: 'https://www.miyoushe.com/ys/article/52845613', date: '2024-05-14' } },
+      { name: '心妮纳白', role: '辅助', teammates: ['珊瑚宫心海', '妮露', '纳西妲'], strategy: '妮露绽放队的治疗位：心海站场挂水兼回血顶住自伤，纳西妲提供草附着与精通，白术补全队瞬抬；此队白术需堆一定精通。', artifact: { setIds: ['昔时之歌'], type: '4件套', mainStats: { sands: '生命%/元素充能效率', goblet: '生命%', circlet: '治疗加成/生命%' }, subStats: ['生命%', '元素充能效率'] }, weapon: { primary: [{ name: '碧落之珑', note: '专武，生存与循环体验最佳' }], alternatives: [{ name: '试作金珀', note: '锻造，更契合芙宁娜且性价比高' }, { name: '讨龙英杰谭', note: '三星，切人加攻，充能需求高（约 240%）' }, { name: '西风秘典', note: '暴击产球，缓解全队充能' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 8, Q: 8 } }, source: { title: '【V4.6攻略·角色攻略】白术攻略·机制/养成/配队', url: 'https://www.miyoushe.com/ys/article/52845613', date: '2024-05-14' } }
+    ] },
     { id: 'kinich',
       name: '基尼奇',
       title: '回火之狩',
@@ -3232,7 +3243,9 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '藏蕴破障', E: '识果种雷', Q: '造生缠藤箭' },
       conNames: ['由根须断定肇始', '由茎干剖析来缘', '由枝节知晓造化', '由片叶管窥枯荣', '由繁花明了悟觉', '由硕实品论应果'],
       desc: '精通植物学的少年学者，现于道成林任巡林官一职。直率热忱，擅长教导脑瓜糊涂的人。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '激化速切', role: '主C', teammates: ['莱依拉', '久岐忍', '菲谢尔'], strategy: '提纳里靠蓄力重击打草伤主要输出，久岐忍与菲谢尔提供雷附着打激化，莱依拉给护盾保证蓄力不被打断；全队都是易获取角色。', artifact: { setIds: ['流浪大地的乐团'], type: '4件套', mainStats: { sands: '元素精通/攻击%', goblet: '草伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['元素精通', '暴击率', '暴击伤害', '攻击%'] }, weapon: { primary: [{ name: '烈阳之嗣', note: '纪行弓，暴击率+重击额外伤害并施加灼心' }], alternatives: [{ name: '破魔之弓', note: '锻造，能量满时普攻/重击增伤翻倍' }, { name: '弹弓', note: '三星，暴击率+近距重击增伤' }] }, talents: { priority: ['A', 'Q', 'E'], goal: { A: 9, E: 6, Q: 9 } }, source: { title: '「5.0萌新攻略」第七篇：常驻五星角色提纳里攻略详解', url: 'https://www.miyoushe.com/ys/article/56963977', date: '2024-08-25' } }
+    ] },
     { id: 'kaveh',
       name: '卡维',
       title: '天穹之镜',
