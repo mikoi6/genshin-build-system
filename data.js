@@ -771,7 +771,9 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '拂金剑斗术', E: '熔铁流狱', Q: '炎啸狮子咬' },
       conNames: ['皎洁之火铓辉灿漫', '净沙利刃明映万乘', '怒势疾迅如焚掠地', '服膺誓禁恪守无失', '猎兽魁首卓荦不羁', '燎燃利爪裂帛斫金'],
       desc: '横行须弥沙漠的佣兵组织「镀金旅团」的成员，勇敢而又强大的战士，在「镀金旅团」内部声名赫赫。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '雷神速切', role: '副C', teammates: ['枫原万叶', '雷电将军', '班尼特'], strategy: '迪希雅在后台开 E 减伤挡刀，真空期切出来开大招把伤害一口气打完；雷电将军主C并全队回能，万叶聚怪减抗，班尼特加攻兼治疗。', artifact: { setIds: ['绝缘之旗印'], type: '4件套', mainStats: { sands: '攻击%/元素充能效率', goblet: '火伤加成/攻击%', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '生命%'] }, weapon: { primary: [{ name: '西风大剑', note: '充能副词条，暴击后回能，缓解全队充能' }], alternatives: [{ name: '黑岩斩刀', note: '星辉兑换，暴伤副词条，击败敌人后叠攻击' }, { name: '狼的末路', note: '攻击副词条，命中低血量敌人后全队加攻' }] }, talents: { priority: ['Q', 'E', 'A'], goal: { A: 1, E: 8, Q: 9 } }, source: { title: '「5.0萌新攻略」第二篇：常驻五星角色迪希雅攻略详解', url: 'https://www.miyoushe.com/ys/article/56836861', date: '2024-08-21' } }
+    ] },
     { id: 'durin',
       name: '杜林',
       title: '「不熄灭的火」',
@@ -1195,7 +1197,11 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '降温处理', E: '踏鲨破浪', Q: '爆瀑飞弹' },
       conNames: ['悠闲的「梅兹特利」…', '全力以赴玛拉妮！', '在欢乐海上冲浪', '鲨鲨主食是豚豚。', '同款冲浪板有售！', '「流泉之众」的精神'],
       desc: '纳塔远近闻名的向导，水上用品商店的经营者，精通各类水上运动的逐浪客。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '蒸发·万叶', role: '主C', teammates: ['香菱', '枫原万叶', '钟离'], strategy: '玛拉妮靠特殊普攻打蒸发：香菱后台持续挂火，万叶聚怪并扩散增伤，钟离提供护盾保证蓄力不被打断；护盾位也可换迪希雅、班尼特。', artifact: { setIds: ['黑曜秘典'], type: '4件套', mainStats: { sands: '生命%/元素精通', goblet: '水伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '生命%', '元素精通'] }, weapon: { primary: [{ name: '冲浪时光', note: '专武，暴伤+生命，战技后普攻增伤' }], alternatives: [{ name: '万世流涌大典', note: '暴伤副词条，面板好堆但性价比一般' }, { name: '千夜浮梦', note: '大幅提升精通，强化反应伤害' }, { name: '遗祀玉珑', note: '四星暴击，注意别让暴击溢出' }, { name: '木棉之环', note: '四星，高额生命百分比，完全够用' }, { name: '流浪乐章', note: '四星暴伤，赌对词条接近专武' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 10, Q: 9 } }, source: { title: '【5.8角色攻略】玛拉妮攻略', url: 'https://www.miyoushe.com/ys/article/67037528', date: '2025-08-01' } },
+      { name: '蒸发·卡齐娜', role: '主C', teammates: ['香菱', '钟离', '卡齐娜'], strategy: '把万叶换成卡齐娜带「4 勇者」提供岩造物与增益，双纳塔角色还能缩短夜魂迸发；香菱挂火、钟离护盾，循环更省心。', artifact: { setIds: ['黑曜秘典'], type: '4件套', mainStats: { sands: '生命%/元素精通', goblet: '水伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '生命%', '元素精通'] }, weapon: { primary: [{ name: '冲浪时光', note: '专武，暴伤+生命，战技后普攻增伤' }], alternatives: [{ name: '万世流涌大典', note: '暴伤副词条，面板好堆但性价比一般' }, { name: '千夜浮梦', note: '大幅提升精通，强化反应伤害' }, { name: '遗祀玉珑', note: '四星暴击，注意别让暴击溢出' }, { name: '木棉之环', note: '四星，高额生命百分比，完全够用' }, { name: '流浪乐章', note: '四星暴伤，赌对词条接近专武' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 10, Q: 9 } }, source: { title: '【5.8角色攻略】玛拉妮攻略', url: 'https://www.miyoushe.com/ys/article/67037528', date: '2025-08-01' } },
+      { name: '燃烧蒸发', role: '主C', teammates: ['艾梅莉埃', '香菱', '纳西妲'], strategy: '火+草制造燃烧，玛拉妮在水伤覆盖下同时吃到蒸发与绽放收益；艾梅莉埃后台增伤，纳西妲提供草附着与精通。', artifact: { setIds: ['黑曜秘典'], type: '4件套', mainStats: { sands: '生命%/元素精通', goblet: '水伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '生命%', '元素精通'] }, weapon: { primary: [{ name: '冲浪时光', note: '专武，暴伤+生命，战技后普攻增伤' }], alternatives: [{ name: '万世流涌大典', note: '暴伤副词条，面板好堆但性价比一般' }, { name: '千夜浮梦', note: '大幅提升精通，强化反应伤害' }, { name: '遗祀玉珑', note: '四星暴击，注意别让暴击溢出' }, { name: '木棉之环', note: '四星，高额生命百分比，完全够用' }, { name: '流浪乐章', note: '四星暴伤，赌对词条接近专武' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 10, Q: 9 } }, source: { title: '【5.8角色攻略】玛拉妮攻略', url: 'https://www.miyoushe.com/ys/article/67037528', date: '2025-08-01' } }
+    ] },
     { id: 'mona',
       name: '莫娜',
       title: '星天水镜',
@@ -1210,7 +1216,9 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '因果点破', E: '水中幻愿', Q: '星命定轨' },
       conNames: ['沉没的预言', '星月的连珠', '不休的天象', '灭绝的预言', '命运的嘲弄', '厄运的修辞'],
       desc: '神秘的少女占星术士，声称自己是「伟大的占星术士莫娜」，拥有与名号相符的不俗实力，博学而高傲。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '蒸发速切', role: '辅助', teammates: ['烟绯', '班尼特', '砂糖'], strategy: '莫娜大招挂「星异」增伤并延迟补一段水伤，砂糖聚怪减抗，班尼特加攻兼治疗，由烟绯站场打蒸发；萌新可用自选角色直接组出。', artifact: { setIds: ['昔日宗室之仪'], type: '4件套', mainStats: { sands: '元素充能效率', goblet: '水伤加成/攻击%', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '讨龙英杰谭', note: '三星辅助神器，切人后新登场角色攻击力提升' }], alternatives: [{ name: '试作金珀', note: '锻造获取，回能并全队回血' }, { name: '四风原典', note: '暴击率副词条，站场叠元素伤害' }] }, talents: { priority: ['Q', 'E', 'A'], goal: { A: 1, E: 6, Q: 9 } }, source: { title: '「5.0萌新攻略」第三篇：常驻五星角色莫娜攻略详解', url: 'https://www.miyoushe.com/ys/article/56845574', date: '2024-08-21' } }
+    ] },
     { id: 'neuvillette',
       name: '那维莱特',
       title: '谕告的潮音',
@@ -1244,7 +1252,11 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '弦月舞步', E: '七域舞步', Q: '浮莲舞步·远梦聆泉' },
       conNames: ['却月的轻舞', '星天的花雨', '倾影的莲步', '挽漪的节音', '翩旋的流光', '断霜的弦歌'],
       desc: '祖拜尔剧场的知名舞者，舞姿灵动优美，为人纯真亲善。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '标准水草绽放', role: '辅助', teammates: ['纳西妲', '珊瑚宫心海', '柯莱'], strategy: '纳西妲先挂草并给精通，妮露 EEE 唤醒丰穰之核，心海站场普攻挂水触发绽放并为自伤回血，柯莱补草附着。', artifact: { setIds: ['乐园遗落之花'], type: '4件套', mainStats: { sands: '生命%', goblet: '生命%', circlet: '生命%' }, subStats: ['生命%', '元素精通', '元素充能效率'] }, weapon: { primary: [{ name: '圣显之钥', note: '专武，按生命提高自己与全队精通' }], alternatives: [{ name: '磐岩结绿', note: '高额生命加成，副C可用' }, { name: '西福斯的月光', note: '四星优选，精通与充能' }, { name: '铁蜂刺', note: '锻造，免费精通武器' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '妮露（Nilou）深度养成攻略——水草绽放核心，高效培养方案', url: 'https://www.miyoushe.com/ys/article/64376558', date: '2025-05-13' } },
+      { name: '低配绽放', role: '辅助', teammates: ['纳西妲', '芭芭拉', '瑶瑶'], strategy: '把心海、柯莱换成更好拿的角色：芭芭拉挂水兼治疗，瑶瑶补草与回复；绽放自伤靠双治疗顶住，成本低收益高。', artifact: { setIds: ['乐园遗落之花'], type: '4件套', mainStats: { sands: '生命%', goblet: '生命%', circlet: '生命%' }, subStats: ['生命%', '元素精通', '元素充能效率'] }, weapon: { primary: [{ name: '圣显之钥', note: '专武，按生命提高自己与全队精通' }], alternatives: [{ name: '磐岩结绿', note: '高额生命加成，副C可用' }, { name: '西福斯的月光', note: '四星优选，精通与充能' }, { name: '铁蜂刺', note: '锻造，免费精通武器' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '妮露（Nilou）深度养成攻略——水草绽放核心，高效培养方案', url: 'https://www.miyoushe.com/ys/article/64376558', date: '2025-05-13' } },
+      { name: '纯水直伤', role: '副C', teammates: ['夜兰', '行秋', '枫原万叶'], strategy: '娱乐向：放弃丰穰之核，靠妮露 E 高频水伤打直伤，夜兰后台水伤、行秋抗打断减伤、万叶扩散增伤；伤害低于绽放队。', artifact: { setIds: ['乐园遗落之花'], type: '4件套', mainStats: { sands: '生命%', goblet: '生命%', circlet: '生命%' }, subStats: ['生命%', '元素精通', '元素充能效率'] }, weapon: { primary: [{ name: '圣显之钥', note: '专武，按生命提高自己与全队精通' }], alternatives: [{ name: '磐岩结绿', note: '高额生命加成，副C可用' }, { name: '西福斯的月光', note: '四星优选，精通与充能' }, { name: '铁蜂刺', note: '锻造，免费精通武器' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '妮露（Nilou）深度养成攻略——水草绽放核心，高效培养方案', url: 'https://www.miyoushe.com/ys/article/64376558', date: '2025-05-13' } }
+    ] },
     { id: 'kamisatoayato',
       name: '神里绫人',
       title: '磐祭叶守',
@@ -1259,7 +1271,10 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '神里流·转', E: '神里流·镜花', Q: '神里流·水囿' },
       conNames: ['镜华风姿', '世有源泉', '无意弄花', '不厌细流', '万水一露', '滥觞无底'],
       desc: '社奉行神里家年轻有为的现任家主，为人温雅有礼，处事颇有手段。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '冰水冻结', role: '主C', teammates: ['芙宁娜', '爱可菲', '茜特菈莉'], strategy: '最强配队：爱可菲强力减抗，芙宁娜搭配群奶把增伤拉满，茜特菈莉提供冰附着；能冻住敌人时绫人输出环境极稳。', artifact: { setIds: ['来歆余响'], type: '4件套', mainStats: { sands: '攻击%', goblet: '水伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '波乱月白经津', note: '专武，暴击率与普攻伤害提升' }], alternatives: [{ name: '雾切之回光', note: '限定五星，暴伤与元素伤害' }, { name: '磐岩结绿', note: '暴击率副词条，按生命转攻击' }, { name: '海渊终曲', note: '四星锻造，性价比高' }, { name: '黑剑', note: '四星纪行，提升普攻伤害' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.6】神里绫人攻略！', url: 'https://www.miyoushe.com/ys/article/65062521', date: '2025-06-06' } },
+      { name: '蒸发', role: '主C', teammates: ['枫原万叶', '香菱', '班尼特'], strategy: '平民配队：香菱后台挂火打蒸发，万叶聚怪扩散减抗，班尼特加攻兼治疗；操作简单但上限一般。', artifact: { setIds: ['来歆余响'], type: '4件套', mainStats: { sands: '攻击%', goblet: '水伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '波乱月白经津', note: '专武，暴击率与普攻伤害提升' }], alternatives: [{ name: '雾切之回光', note: '限定五星，暴伤与元素伤害' }, { name: '磐岩结绿', note: '暴击率副词条，按生命转攻击' }, { name: '海渊终曲', note: '四星锻造，性价比高' }, { name: '黑剑', note: '四星纪行，提升普攻伤害' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.6】神里绫人攻略！', url: 'https://www.miyoushe.com/ys/article/65062521', date: '2025-06-06' } }
+    ] },
     { id: 'vodyanitsa',
       name: '沃雅妮莎',
       title: '幽歌萦渊',
@@ -1499,7 +1514,10 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '迷羽流击', E: '灵缰追影', Q: '索魂命袭' },
       conNames: ['弹匣，躁动的轮盘', '枪口，灼烧的轻烟', '笼绳，缜密的掌控', '星火，瞬息的击发', '帽檐，沙影的轮廓', '相决，斗争的荣光'],
       desc: '特拉洛坎的「调停人」，万千争端的终结者。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '纳塔战舰', role: '主C', teammates: ['玛薇卡', '班尼特', '茜特菈莉'], strategy: '三名异色队友把染色导弹吃满：火神挂火并提供增伤，班尼特给前台加攻与治疗，茜特菈莉补冰与护盾；茜特菈莉和火神都可换芙宁娜，异色位也能用香菱、欧洛伦。适合 1 命以上。', artifact: { setIds: ['黑曜秘典'], type: '4件套', mainStats: { sands: '攻击%', goblet: '攻击%', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素精通'] }, weapon: { primary: [{ name: '星鹫赤羽', note: '专武，双爆与攻击、重击/大招伤害全面提升' }], alternatives: [{ name: '最初的大魔术', note: '暴伤副词条，重击加成' }, { name: '缀花之翎', note: '四星，大量重击加成' }, { name: '烈阳之嗣', note: '四星，暴击率与重击伤害' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.8】恰斯卡攻略！', url: 'https://www.miyoushe.com/ys/article/67829221', date: '2025-08-24' } },
+      { name: '班芙欧混伤', role: '主C', teammates: ['班尼特', '芙宁娜', '欧洛伦'], strategy: '零命泛用解：班尼特前台加攻兼治疗，芙宁娜全域增伤（单水建议充能 200+），欧洛伦后台雷伤并提供三种异色；欧洛伦可换菲谢尔、北斗等雷系。', artifact: { setIds: ['黑曜秘典'], type: '4件套', mainStats: { sands: '攻击%', goblet: '攻击%', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素精通'] }, weapon: { primary: [{ name: '星鹫赤羽', note: '专武，双爆与攻击、重击/大招伤害全面提升' }], alternatives: [{ name: '最初的大魔术', note: '暴伤副词条，重击加成' }, { name: '缀花之翎', note: '四星，大量重击加成' }, { name: '烈阳之嗣', note: '四星，暴击率与重击伤害' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.8】恰斯卡攻略！', url: 'https://www.miyoushe.com/ys/article/67829221', date: '2025-08-24' } }
+    ] },
     { id: 'jean',
       name: '琴',
       title: '蒲公英骑士',
@@ -2910,7 +2928,13 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '心织刀流', E: '羽袖一触', Q: '二刀之形·比翼' },
       conNames: ['正绢六通', '落染五色', '缀锦四分', '衣裁三礼', '绫羽二重', '万理一空'],
       desc: '「千织屋」的老板。枫丹著名服装设计师。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '一五钟千', role: '副C', teammates: ['荒泷一斗', '五郎', '钟离'], strategy: '0命刚需岩造物，钟离负责创造物与抗打断，五郎给防御与岩伤，一斗主C；千织靠「袖」打后台岩伤，并用战技后迅速切人补输出。6命后玩法转为站场主C，圣遗物改 4 华馆。', artifact: { setIds: ['黄金剧团'], type: '4件套', mainStats: { sands: '防御%', goblet: '岩伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '防御%', '攻击%'] }, weapon: { primary: [{ name: '有乐御簾切', note: '专武，防御转攻击，暴伤副词条' }], alternatives: [{ name: '磐岩结绿', note: '暴击率副词条，按生命转攻击' }, { name: '裁叶萃光', note: '暴伤副词条，攻击加成' }, { name: '狼牙', note: '四星最优，暴击/战技增伤' }, { name: '黎明神剑', note: '三星过渡，生命高于90%时暴击率+28%' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.1攻略·角色攻略】千织攻略·详解养成与配队', url: 'https://www.miyoushe.com/ys/article/58424220', date: '2024-10-09' } },
+      { name: '仆千钟班', role: '副C', teammates: ['阿蕾奇诺', '钟离', '班尼特'], strategy: '仆千钟班是千织的混伤通用队：班尼特给前台加攻与治疗，钟离提供岩造物和护盾，千织后台岩伤不干扰仆人火附着。', artifact: { setIds: ['黄金剧团'], type: '4件套', mainStats: { sands: '防御%', goblet: '岩伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '防御%', '攻击%'] }, weapon: { primary: [{ name: '有乐御簾切', note: '专武，防御转攻击，暴伤副词条' }], alternatives: [{ name: '磐岩结绿', note: '暴击率副词条，按生命转攻击' }, { name: '裁叶萃光', note: '暴伤副词条，攻击加成' }, { name: '狼牙', note: '四星最优，暴击/战技增伤' }, { name: '黎明神剑', note: '三星过渡，生命高于90%时暴击率+28%' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.1攻略·角色攻略】千织攻略·详解养成与配队', url: 'https://www.miyoushe.com/ys/article/58424220', date: '2024-10-09' } },
+      { name: '诺芙钟千', role: '副C', teammates: ['诺艾尔', '芙宁娜', '钟离'], strategy: '诺艾尔多岩队兼顾充能，钟离提供岩造物提高稳定性，芙宁娜全域增伤；千织1命后可将钟离换为五郎或夜兰。', artifact: { setIds: ['黄金剧团'], type: '4件套', mainStats: { sands: '防御%', goblet: '岩伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '防御%', '攻击%'] }, weapon: { primary: [{ name: '有乐御簾切', note: '专武，防御转攻击，暴伤副词条' }], alternatives: [{ name: '磐岩结绿', note: '暴击率副词条，按生命转攻击' }, { name: '裁叶萃光', note: '暴伤副词条，攻击加成' }, { name: '狼牙', note: '四星最优，暴击/战技增伤' }, { name: '黎明神剑', note: '三星过渡，生命高于90%时暴击率+28%' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.1攻略·角色攻略】千织攻略·详解养成与配队', url: 'https://www.miyoushe.com/ys/article/58424220', date: '2024-10-09' } },
+      { name: '娜千芙班', role: '副C', teammates: ['娜维娅', '芙宁娜', '班尼特'], strategy: '娜维娅不产岩造物，只适配 1 命及以上千织；芙宁娜增伤、班尼特加攻，千织补后台岩伤与快速切人。', artifact: { setIds: ['黄金剧团'], type: '4件套', mainStats: { sands: '防御%', goblet: '岩伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '防御%', '攻击%'] }, weapon: { primary: [{ name: '有乐御簾切', note: '专武，防御转攻击，暴伤副词条' }], alternatives: [{ name: '磐岩结绿', note: '暴击率副词条，按生命转攻击' }, { name: '裁叶萃光', note: '暴伤副词条，攻击加成' }, { name: '狼牙', note: '四星最优，暴击/战技增伤' }, { name: '黎明神剑', note: '三星过渡，生命高于90%时暴击率+28%' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.1攻略·角色攻略】千织攻略·详解养成与配队', url: 'https://www.miyoushe.com/ys/article/58424220', date: '2024-10-09' } },
+      { name: '绫芙希千', role: '副C', teammates: ['神里绫人', '芙宁娜', '希诺宁'], strategy: '绫人短轴站场输出，希诺宁减抗并提供增益，芙宁娜全域增伤；千织后台岩伤填补绫人真空期。', artifact: { setIds: ['黄金剧团'], type: '4件套', mainStats: { sands: '防御%', goblet: '岩伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '防御%', '攻击%'] }, weapon: { primary: [{ name: '有乐御簾切', note: '专武，防御转攻击，暴伤副词条' }], alternatives: [{ name: '磐岩结绿', note: '暴击率副词条，按生命转攻击' }, { name: '裁叶萃光', note: '暴伤副词条，攻击加成' }, { name: '狼牙', note: '四星最优，暴击/战技增伤' }, { name: '黎明神剑', note: '三星过渡，生命高于90%时暴击率+28%' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.1攻略·角色攻略】千织攻略·详解养成与配队', url: 'https://www.miyoushe.com/ys/article/58424220', date: '2024-10-09' } }
+    ] },
     { id: 'xilonen',
       name: '希诺宁',
       title: '焮火铸魂',
@@ -3155,7 +3179,11 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '夜阳斗技', E: '悬猎·游骋高狩', Q: '向伟大圣龙致意' },
       conNames: ['七鹦之喙', '星虎之掌', '原鳄之爪', '蜂鸟之羽', '吼猴之尾', '瑞兽之形'],
       desc: '维茨特兰的猎龙人，精于度量代价。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '燃烧最强', role: '主C', teammates: ['艾梅莉埃', '伊安珊', '玛薇卡'], strategy: '三名纳塔角色缩短夜魂迸发冷却，玛薇卡挂火保证燃烧，艾梅莉埃后台燃烧增伤，基尼奇靠迴猎贯鳞炮打草伤；伊安珊可换班尼特。', artifact: { setIds: ['黑曜秘典'], type: '4件套', mainStats: { sands: '攻击%', goblet: '草伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%'] }, weapon: { primary: [{ name: '山王长牙', note: '专武，攻击与大招伤害双提升（二命前不建议抽）' }], alternatives: [{ name: '狼的末路', note: '攻击副词条，团队攻击加成' }, { name: '螭骨剑', note: '四星大剑真神，需绑定盾辅' }, { name: '撼地者', note: '纳塔锻造，获取方便' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.6】基尼奇攻略！', url: 'https://www.miyoushe.com/ys/article/64720201', date: '2025-05-25' } },
+      { name: '烈绽放', role: '主C', teammates: ['纳西妲', '芙宁娜', '托马'], strategy: '托马持续挂火触发烈绽放，纳西妲提供草伤与精通增益，芙宁娜全域增伤；芙宁娜可换夜兰、行秋。', artifact: { setIds: ['黑曜秘典'], type: '4件套', mainStats: { sands: '攻击%', goblet: '草伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%'] }, weapon: { primary: [{ name: '山王长牙', note: '专武，攻击与大招伤害双提升（二命前不建议抽）' }], alternatives: [{ name: '狼的末路', note: '攻击副词条，团队攻击加成' }, { name: '螭骨剑', note: '四星大剑真神，需绑定盾辅' }, { name: '撼地者', note: '纳塔锻造，获取方便' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.6】基尼奇攻略！', url: 'https://www.miyoushe.com/ys/article/64720201', date: '2025-05-25' } },
+      { name: '平民双火双草', role: '主C', teammates: ['瑶瑶', '班尼特', '托马'], strategy: '零命零专武的低配思路：双火保证燃烧与攻击增益，双草维持草附着，基尼奇站场开炮输出。', artifact: { setIds: ['黑曜秘典'], type: '4件套', mainStats: { sands: '攻击%', goblet: '草伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%'] }, weapon: { primary: [{ name: '山王长牙', note: '专武，攻击与大招伤害双提升（二命前不建议抽）' }], alternatives: [{ name: '狼的末路', note: '攻击副词条，团队攻击加成' }, { name: '螭骨剑', note: '四星大剑真神，需绑定盾辅' }, { name: '撼地者', note: '纳塔锻造，获取方便' }] }, talents: { priority: ['E', 'Q', 'A'], goal: { A: 1, E: 9, Q: 8 } }, source: { title: '【V5.6】基尼奇攻略！', url: 'https://www.miyoushe.com/ys/article/64720201', date: '2025-05-25' } }
+    ] },
     { id: 'lauma',
       name: '菈乌玛',
       title: '永月的祀歌',
