@@ -231,6 +231,37 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--te
 .char-card .char-name { font-weight: 600; font-size: 14px; }
 .char-card .char-meta { font-size: 12px; color: var(--text-tertiary); display: flex; gap: 6px; align-items: center; }
 .char-card .rarity { color: var(--gold); font-size: 12px; letter-spacing: 1px; }
+/* 攻略状态标记：已收录显示配队数，未收录弱化显示 */
+.char-build-mark { font-size: 11px; margin-top: 4px; color: var(--text-tertiary); }
+.char-card:not(.char-card-bare) .char-build-mark { color: var(--accent-text); font-weight: 600; }
+/* 未收录攻略的角色：整体略降饱和，一眼可辨，但不至于不可用 */
+.char-card-bare .char-avatar { filter: grayscale(.55); opacity: .85; }
+.char-card-bare .char-build-mark { opacity: .7; }
+.el-none { --el: var(--text-tertiary); }
+
+/* 筛选勾选框 */
+.filter-check {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 10px; font-size: 13px; color: var(--text-secondary);
+  cursor: pointer; user-select: none;
+}
+.filter-check input { cursor: pointer; }
+
+/* 角色档案区 */
+.profile-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 8px 16px;
+}
+.profile-item { display: flex; gap: 8px; font-size: 13px; align-items: baseline; }
+.profile-key { color: var(--text-tertiary); flex-shrink: 0; min-width: 56px; }
+.profile-val { color: var(--text-primary); font-weight: 500; }
+.cons-list { display: flex; flex-direction: column; gap: 6px; }
+.cons-item { display: flex; gap: 10px; font-size: 13px; line-height: 1.6; }
+.cons-idx {
+  flex-shrink: 0; font-size: 11px; font-weight: 700;
+  color: var(--accent-text); background: var(--accent-soft);
+  border-radius: 4px; padding: 1px 6px; height: fit-content;
+}
 
 /* ============ 圣遗物列表 ============ */
 .artifact-list { display: flex; flex-direction: column; gap: 8px; }
@@ -319,7 +350,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--te
 <body data-theme="light">
 <header class="app-header no-print">
   <div class="header-inner">
-    <div class="app-title"><span class="logo">⚔️</span> 原神角色养成系统 <small>v2.0.1</small></div>
+    <div class="app-title"><span class="logo">⚔️</span> 原神角色养成系统 <small>v2.1.0</small></div>
     <nav class="nav-tabs" id="navTabs">
       <button class="nav-tab active" data-page="characters">角色库</button>
       <button class="nav-tab" data-page="bag">我的背包</button>
@@ -430,7 +461,7 @@ function getChar(id) { return DATA.CHARACTERS.find(c => c.id === id); }
 function getCharByName(name) { return DATA.CHARACTERS.find(c => c.name === name); }
 
 /* ================= 页面：角色库 ================= */
-let charFilter = { keyword: '', element: '', rarity: '' };
+let charFilter = { keyword: '', element: '', rarity: '', buildOnly: false };
 let selectedCharId = null;
 
 function renderCharacters() {
@@ -445,8 +476,12 @@ function renderCharacters() {
     if (charFilter.keyword && !c.name.includes(charFilter.keyword)) return false;
     if (charFilter.element && c.element !== charFilter.element) return false;
     if (charFilter.rarity && c.rarity !== Number(charFilter.rarity)) return false;
+    if (charFilter.buildOnly && !(c.teamBuilds && c.teamBuilds.length)) return false;
     return true;
   });
+
+  const total = DATA.CHARACTERS.length;
+  const withBuild = DATA.CHARACTERS.filter(c => c.teamBuilds && c.teamBuilds.length).length;
 
   const elementOpts = DATA.ELEMENTS.map(e => `<option value="${e}" ${charFilter.element===e?'selected':''}>${e}</option>`).join('');
   page.innerHTML = `
@@ -460,24 +495,35 @@ function renderCharacters() {
           <option value="4" ${charFilter.rarity==='4'?'selected':''}>四星</option>
         </select>
       </div>
+      <label class="filter-check">
+        <input type="checkbox" id="charBuildOnly" ${charFilter.buildOnly?'checked':''}>
+        只看已收录养成攻略的角色
+      </label>
     </div>
     <div class="char-grid">
-      ${list.map(c => `
-        <div class="char-card" data-id="${c.id}">
+      ${list.map(c => {
+        const has = c.teamBuilds && c.teamBuilds.length;
+        return `
+        <div class="char-card${has ? '' : ' char-card-bare'}" data-id="${c.id}">
           <div class="char-avatar">${charAvatar(c)}</div>
           <div class="char-name">${esc(c.name)}</div>
           <div class="char-meta">
-            <span class="tag tag-el el-${c.element}">${c.element}</span>
+            <span class="tag tag-el ${elClass(c.element)}">${esc(c.element)}</span>
             <span class="rarity">${'★'.repeat(c.rarity)}</span>
           </div>
           <div class="char-meta" style="margin-top:2px">${esc(c.weapon)}</div>
-        </div>`).join('') || '<div class="empty-state" style="grid-column:1/-1"><div class="icon">🔍</div>没有匹配的角色</div>'}
+          <div class="char-build-mark">${has ? has + ' 个配队' : '攻略待补'}</div>
+        </div>`;
+      }).join('') || '<div class="empty-state" style="grid-column:1/-1"><div class="icon">🔍</div>没有匹配的角色</div>'}
     </div>
-    <p class="hint" style="margin-top:14px">共 ${list.length} 个角色 · 点击角色查看配队方案与养成攻略</p>`;
+    <p class="hint" style="margin-top:14px">
+      共 ${list.length} 个角色（全库 ${total} 个，其中 ${withBuild} 个已收录养成攻略）· 点击角色查看详情
+    </p>`;
 
   $('#charSearch').addEventListener('input', e => { charFilter.keyword = e.target.value.trim(); renderCharacters(); });
   $('#charElement').addEventListener('change', e => { charFilter.element = e.target.value; renderCharacters(); });
   $('#charRarity').addEventListener('change', e => { charFilter.rarity = e.target.value; renderCharacters(); });
+  $('#charBuildOnly').addEventListener('change', e => { charFilter.buildOnly = e.target.checked; renderCharacters(); });
 
   $$('.char-card', page).forEach(card => {
     card.addEventListener('click', () => {
@@ -492,8 +538,13 @@ function renderCharacters() {
 let charActiveBuild = {};
 
 function elementIcon(el) {
-  const map = { '火':'🔥','水':'💧','风':'🌪️','雷':'⚡','冰':'❄️','岩':'🪨','草':'🌿' };
+  const map = { '火':'🔥','水':'💧','风':'🌪️','雷':'⚡','冰':'❄️','岩':'🪨','草':'🌿','无':'🧭' };
   return map[el] || '❔';
+}
+
+/* 元素配色类名：'无' 没有专属配色，回退到中性样式 */
+function elClass(el) {
+  return ['火','水','风','雷','冰','岩','草'].includes(el) ? 'el-' + el : 'el-none';
 }
 
 /* 头像：优先加载 images/{角色id}.png，找不到就自动回退到元素图标
@@ -504,34 +555,110 @@ function charAvatar(c) {
          `<img class="avatar-img" src="${esc(src)}" alt="${esc(c.name)}" loading="lazy" onerror="this.remove()">`;
 }
 
+/* 角色档案区：称号 / 地区 / 生日 / 突破属性 / 命之座 + 战斗天赋 + 命座列表
+ * 这些字段来自官方数据，是客观事实，与「养成攻略」分开呈现 */
+function renderCharProfile(c) {
+  const rows = [
+    ['称号', c.title],
+    ['所属', c.region],
+    ['生日', c.birthday],
+    ['突破属性', c.substat],
+    ['命之座', c.constellation],
+  ].filter(r => r[1]);
+
+  const skills = c.skills || {};
+  const skillRows = [
+    ['普通攻击', skills.A],
+    ['元素战技', skills.E],
+    ['元素爆发', skills.Q],
+  ].filter(r => r[1]);
+
+  const cons = (c.conNames || []).filter(Boolean);
+
+  return `
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-body">
+        <div class="section-title" style="margin-top:0">角色档案</div>
+        <div class="profile-grid">
+          ${rows.map(([k, v]) => `<div class="profile-item"><span class="profile-key">${esc(k)}</span><span class="profile-val">${esc(v)}</span></div>`).join('')}
+        </div>
+        ${c.desc ? `<div class="hint" style="margin-top:10px;line-height:1.7">${esc(c.desc)}</div>` : ''}
+
+        ${skillRows.length ? `
+        <div class="section-title" style="margin-top:18px">战斗天赋</div>
+        <div class="profile-grid">
+          ${skillRows.map(([k, v]) => `<div class="profile-item"><span class="profile-key">${esc(k)}</span><span class="profile-val">${esc(v)}</span></div>`).join('')}
+        </div>` : ''}
+
+        ${cons.length ? `
+        <div class="section-title" style="margin-top:18px">命之座</div>
+        <div class="cons-list">
+          ${cons.map((n, i) => `<div class="cons-item"><span class="cons-idx">${i + 1}命</span><span>${esc(n)}</span></div>`).join('')}
+        </div>` : ''}
+      </div>
+    </div>`;
+}
+
+/* 攻略待补充的提示。刻意讲清「为什么没有」，避免用户以为系统坏了 */
+function renderNoBuildNotice(c) {
+  return `
+    <div class="panel">
+      <div class="panel-body">
+        <div class="empty-state" style="padding:26px 10px">
+          <div class="icon">📝</div>
+          <div style="font-weight:600;margin-bottom:6px">${esc(c.name)} 的养成攻略尚未收录</div>
+          <div class="hint" style="max-width:520px;line-height:1.8;text-align:left">
+            上方的角色档案（元素、武器类型、突破属性、战斗天赋、命之座）来自官方数据，可放心参考。<br>
+            而「该配哪套圣遗物 / 该用哪把武器 / 天赋怎么加点」属于攻略建议，需要逐条核对攻略来源才会填入，
+            <b>为避免给你错误指引，宁可不写。</b><br>
+            需要优先补哪个角色，告诉我就行。
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
 function renderCharDetail(page) {
   const c = getChar(selectedCharId);
-  const builds = c.teamBuilds;
+  const builds = c.teamBuilds || [];
   let activeBuild = charActiveBuild[c.id] || 0;
   if (activeBuild >= builds.length) activeBuild = 0;
   const b = builds[activeBuild];
+
+  const metaLine = [c.weapon, c.region, c.birthday].filter(Boolean).map(esc).join(' · ');
 
   page.innerHTML = `
     <div class="no-print" style="margin-bottom:12px">
       <button class="btn btn-sm" id="backToList">← 返回角色列表</button>
     </div>
-    <div class="panel">
-      <div class="panel-body" style="padding-bottom:0">
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-body">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
           <div class="char-avatar" style="width:72px;height:72px;flex-shrink:0;border-radius:var(--radius);position:relative;overflow:hidden;background:linear-gradient(135deg,var(--accent-soft),var(--border-light))">${charAvatar(c)}</div>
           <div>
-            <div style="font-size:20px;font-weight:700">${esc(c.name)} <span class="tag tag-el el-${c.element}" style="vertical-align:middle">${c.element}</span> <span class="rarity" style="color:var(--gold)">${'★'.repeat(c.rarity)}</span></div>
-            <div class="hint">${esc(c.weapon)} · ${builds.length} 个配队方案</div>
+            <div style="font-size:20px;font-weight:700">
+              ${esc(c.name)}
+              <span class="tag tag-el ${elClass(c.element)}" style="vertical-align:middle">${esc(c.element)}</span>
+              <span class="rarity" style="color:var(--gold)">${'★'.repeat(c.rarity)}</span>
+            </div>
+            <div class="hint">${metaLine}${metaLine ? ' · ' : ''}${builds.length ? builds.length + ' 个配队方案' : '养成攻略待补充'}</div>
           </div>
         </div>
       </div>
-      <div class="panel-body">
-        <div class="build-tabs">
-          ${builds.map((bb, i) => `<button class="build-tab ${i===activeBuild?'active':''}" data-bi="${i}">${esc(bb.name)} <span class="hint">· ${esc(bb.role)}</span></button>`).join('')}
+    </div>
+
+    ${renderCharProfile(c)}
+
+    ${builds.length ? `
+      <div class="panel">
+        <div class="panel-body">
+          <div class="section-title" style="margin-top:0">养成攻略</div>
+          <div class="build-tabs">
+            ${builds.map((bb, i) => `<button class="build-tab ${i===activeBuild?'active':''}" data-bi="${i}">${esc(bb.name)} <span class="hint">· ${esc(bb.role)}</span></button>`).join('')}
+          </div>
+          ${renderBuildDetail(c, b)}
         </div>
-        ${renderBuildDetail(c, b)}
-      </div>
-    </div>`;
+      </div>` : renderNoBuildNotice(c)}`;
 
   $('#backToList').addEventListener('click', () => { selectedCharId = null; renderCharacters(); });
   $$('.build-tab', page).forEach(tab => {
@@ -572,14 +699,26 @@ function renderBuildDetail(c, b) {
       <div style="font-weight:600;color:var(--accent-text)">${esc(v)}</div>
     </div>`).join('');
 
+  // 武器元信息（星级 · 副属性）取自全量武器库，均为客观数据
+  const wMeta = name => {
+    const w = DATA.WEAPONS[name];
+    if (!w) return '';
+    return [w.rarity ? w.rarity + '星' : '', w.sub || ''].filter(Boolean).join(' · ');
+  };
+  const wLine = (w, strong) => {
+    const meta = wMeta(w.name);
+    const nm = strong ? `<strong>${esc(w.name)}</strong>` : esc(w.name);
+    return `<div style="margin-bottom:4px">${nm}${meta ? ` <span class="hint">(${esc(meta)})</span>` : ''} ${w.note ? `<span class="hint">· ${esc(w.note)}</span>` : ''}</div>`;
+  };
+
   const weaponHtml = `
     <div class="slot-box">
       <div class="slot-label">主推武器</div>
-      ${b.weapon.primary.map(w => `<div style="margin-bottom:2px"><strong>${esc(w.name)}</strong> ${w.note ? `<span class="hint">· ${esc(w.note)}</span>`:''}</div>`).join('')}
+      ${b.weapon.primary.map(w => wLine(w, true)).join('')}
     </div>
     <div class="slot-box">
       <div class="slot-label">备选武器</div>
-      ${b.weapon.alternatives.map(w => `<div style="margin-bottom:2px">${esc(w.name)} ${w.note ? `<span class="hint">· ${esc(w.note)}</span>`:''}</div>`).join('')}
+      ${b.weapon.alternatives.map(w => wLine(w, false)).join('')}
     </div>`;
 
   const talentName = { A: '普通攻击', E: '元素战技', Q: '元素爆发' };
@@ -1109,7 +1248,9 @@ let buildSelect = { charId: '', buildIdx: 0 };
 
 function renderBuildReal() {
   const page = $('#page-build');
-  const charOpts = DATA.CHARACTERS.map(c => `<option value="${c.id}" ${buildSelect.charId===c.id?'selected':''}>${esc(c.name)}（${c.element}）</option>`).join('');
+  // 配装推荐必须依赖「目标配装」，即攻略；因此只列出已收录攻略的角色
+  const buildable = DATA.CHARACTERS.filter(c => c.teamBuilds && c.teamBuilds.length);
+  const charOpts = buildable.map(c => `<option value="${c.id}" ${buildSelect.charId===c.id?'selected':''}>${esc(c.name)}（${c.element}）</option>`).join('');
 
   page.innerHTML = `
     <div class="panel panel-body" style="margin-bottom:16px">
@@ -1119,6 +1260,9 @@ function renderBuildReal() {
         <select id="bChar"><option value="">选择角色…</option>${charOpts}</select>
         <select id="bBuild"><option value="">选择配队方案…</option></select>
       </div>
+      <p class="hint" style="margin-top:8px">
+        当前仅 ${buildable.length} 个角色已收录养成攻略（全库 ${DATA.CHARACTERS.length} 个），故只在此列出可直接推荐的。
+      </p>
     </div>
     <div id="buildResult"></div>`;
 
@@ -1235,6 +1379,11 @@ function renderBuildResult() {
   const c = getChar(buildSelect.charId);
   if (!c) { box.innerHTML = ''; return; }
   const b = c.teamBuilds[buildSelect.buildIdx];
+  // 角色无攻略（或配队索引失效）时给出明确提示，而不是抛异常
+  if (!b) {
+    box.innerHTML = `<div class="panel"><div class="empty-state"><div class="icon">📝</div>${esc(c.name)} 的养成攻略尚未收录，暂无目标配装可供比对</div></div>`;
+    return;
+  }
   const plans = recommendBuild(c, buildSelect.buildIdx);
   const hasArtifacts = state.artifacts.length > 0;
 
@@ -1281,7 +1430,9 @@ let planSelect = { charId: '', buildIdx: 0 };
 
 function renderPlanReal() {
   const page = $('#page-plan');
-  const charOpts = DATA.CHARACTERS.map(c => `<option value="${c.id}" ${planSelect.charId===c.id?'selected':''}>${esc(c.name)}</option>`).join('');
+  // 刷取规划同样依赖目标配装（攻略），只列出已收录攻略的角色
+  const buildable = DATA.CHARACTERS.filter(c => c.teamBuilds && c.teamBuilds.length);
+  const charOpts = buildable.map(c => `<option value="${c.id}" ${planSelect.charId===c.id?'selected':''}>${esc(c.name)}</option>`).join('');
 
   page.innerHTML = `
     <div class="panel panel-body" style="margin-bottom:16px">
@@ -1291,6 +1442,7 @@ function renderPlanReal() {
         <select id="pChar"><option value="">选择角色…</option>${charOpts}</select>
         <select id="pBuild"><option value="">选择配队方案…</option></select>
       </div>
+      <p class="hint" style="margin-top:8px">当前仅 ${buildable.length} 个角色已收录养成攻略，故只列出可做缺口分析的角色。</p>
     </div>
     <div id="planResult"></div>`;
 
@@ -1323,6 +1475,10 @@ function renderPlanResult() {
   const c = getChar(planSelect.charId);
   if (!c) { box.innerHTML = ''; return; }
   const b = c.teamBuilds[planSelect.buildIdx];
+  if (!b) {
+    box.innerHTML = `<div class="panel"><div class="empty-state"><div class="icon">📝</div>${esc(c.name)} 的养成攻略尚未收录，暂无目标配装可做缺口分析</div></div>`;
+    return;
+  }
   const reqSets = b.artifact.setIds.map(sn => getSet(sn)?.name || sn);
   const slotLabels = { sands: '时之沙', goblet: '空之杯', circlet: '理之冠' };
   const artifacts = state.artifacts;
@@ -1401,7 +1557,7 @@ function renderSettingsReal() {
     <div class="panel panel-body" style="margin-top:16px">
       <div class="section-title">关于</div>
       <div class="hint" style="line-height:1.8">
-        原神角色养成系统 v2.0.1<br>
+        原神角色养成系统 v2.1.0<br>
         覆盖角色 ${DATA.CHARACTERS.length} 个 · 圣遗物套装 ${DATA.ARTIFACT_SETS.length} 套 · 武器 ${Object.keys(DATA.WEAPONS).length} 把<br>
         数据基于公开攻略整理，随游戏版本变化，仅供参考<br>
         个人自用工具，与米哈游无关联
