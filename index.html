@@ -215,6 +215,18 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--te
   display: flex; align-items: center; justify-content: center;
   font-size: 40px; margin-bottom: 8px;
   background: linear-gradient(135deg, var(--accent-soft), var(--border-light));
+  position: relative; overflow: hidden;
+}
+/* 头像：图片盖在元素图标上，图片加载失败则自动隐藏、回退到图标 */
+.avatar-emoji {
+  position: absolute; inset: 0; display: flex;
+  align-items: center; justify-content: center; font-size: 40px;
+  pointer-events: none;
+}
+.avatar-img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  border-radius: inherit;
 }
 .char-card .char-name { font-weight: 600; font-size: 14px; }
 .char-card .char-meta { font-size: 12px; color: var(--text-tertiary); display: flex; gap: 6px; align-items: center; }
@@ -307,7 +319,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--te
 <body data-theme="light">
 <header class="app-header no-print">
   <div class="header-inner">
-    <div class="app-title"><span class="logo">⚔️</span> 原神角色养成系统 <small>v2.0</small></div>
+    <div class="app-title"><span class="logo">⚔️</span> 原神角色养成系统 <small>v2.0.1</small></div>
     <nav class="nav-tabs" id="navTabs">
       <button class="nav-tab active" data-page="characters">角色库</button>
       <button class="nav-tab" data-page="bag">我的背包</button>
@@ -452,7 +464,7 @@ function renderCharacters() {
     <div class="char-grid">
       ${list.map(c => `
         <div class="char-card" data-id="${c.id}">
-          <div class="char-avatar" style="background:linear-gradient(135deg,var(--accent-soft),var(--border-light))">${elementIcon(c.element)}</div>
+          <div class="char-avatar">${charAvatar(c)}</div>
           <div class="char-name">${esc(c.name)}</div>
           <div class="char-meta">
             <span class="tag tag-el el-${c.element}">${c.element}</span>
@@ -484,6 +496,14 @@ function elementIcon(el) {
   return map[el] || '❔';
 }
 
+/* 头像：优先加载 images/{角色id}.png，找不到就自动回退到元素图标
+ * 图片放在项目根目录的 images/ 文件夹，命名用小写英文 id（见 images/README.md） */
+function charAvatar(c) {
+  const src = `images/${c.id}.png`;
+  return `<span class="avatar-emoji">${elementIcon(c.element)}</span>` +
+         `<img class="avatar-img" src="${esc(src)}" alt="${esc(c.name)}" loading="lazy" onerror="this.remove()">`;
+}
+
 function renderCharDetail(page) {
   const c = getChar(selectedCharId);
   const builds = c.teamBuilds;
@@ -498,7 +518,7 @@ function renderCharDetail(page) {
     <div class="panel">
       <div class="panel-body" style="padding-bottom:0">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-          <div class="char-avatar" style="width:64px;height:64px;font-size:32px;flex-shrink:0;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent-soft),var(--border-light))">${elementIcon(c.element)}</div>
+          <div class="char-avatar" style="width:72px;height:72px;flex-shrink:0;border-radius:var(--radius);position:relative;overflow:hidden;background:linear-gradient(135deg,var(--accent-soft),var(--border-light))">${charAvatar(c)}</div>
           <div>
             <div style="font-size:20px;font-weight:700">${esc(c.name)} <span class="tag tag-el el-${c.element}" style="vertical-align:middle">${c.element}</span> <span class="rarity" style="color:var(--gold)">${'★'.repeat(c.rarity)}</span></div>
             <div class="hint">${esc(c.weapon)} · ${builds.length} 个配队方案</div>
@@ -638,7 +658,10 @@ function renderBagReal() {
     <div class="panel panel-body" style="margin-bottom:16px">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px">
         <div class="section-title" style="margin:0">我的背包 <span class="hint">（${state.artifacts.length} 件）</span></div>
-        <button class="btn btn-primary" id="addArtifact">＋ 录入圣遗物</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="enkaImport">⬇️ 从 Enka 导入</button>
+          <button class="btn btn-primary" id="addArtifact">＋ 手动录入</button>
+        </div>
       </div>
       <div class="search-bar" style="margin-bottom:0">
         <select id="bagSet"><option value="">全部套装</option>${setOpts}</select>
@@ -649,6 +672,7 @@ function renderBagReal() {
       : `<div class="panel"><div class="empty-state"><div class="icon">🎒</div>${state.artifacts.length ? '没有匹配的圣遗物' : '还没有录入圣遗物，点上方按钮开始'}</div></div>`}`;
 
   $('#addArtifact').addEventListener('click', () => openArtifactModal());
+  $('#enkaImport').addEventListener('click', openEnkaImport);
   $('#bagSet').addEventListener('change', e => { bagFilter.set = e.target.value; renderBagReal(); });
   $('#bagSlot').addEventListener('change', e => { bagFilter.slot = e.target.value; renderBagReal(); });
 
@@ -808,6 +832,276 @@ function closeModal() {
   $('#modalMask').classList.remove('open');
   $('#modalBox').innerHTML = '';
   editingArtifactId = null;
+}
+
+/* ================= Enka 数据导入 ================= */
+let enkaParsed = null;
+
+const PERCENT_PROPS = new Set([
+  'FIGHT_PROP_HP_PERCENT', 'FIGHT_PROP_ATTACK_PERCENT', 'FIGHT_PROP_DEFENSE_PERCENT',
+  'FIGHT_PROP_CRITICAL', 'FIGHT_PROP_CRITICAL_HURT', 'FIGHT_PROP_CHARGE_EFFICIENCY',
+  'FIGHT_PROP_HEAL_ADD', 'FIGHT_PROP_PHYSICAL_ADD_HURT',
+  'FIGHT_PROP_FIRE_ADD_HURT', 'FIGHT_PROP_WATER_ADD_HURT', 'FIGHT_PROP_WIND_ADD_HURT',
+  'FIGHT_PROP_ELEC_ADD_HURT', 'FIGHT_PROP_ICE_ADD_HURT', 'FIGHT_PROP_ROCK_ADD_HURT',
+  'FIGHT_PROP_GRASS_ADD_HURT',
+]);
+
+function fmtStat(propId, v) {
+  const num = Math.round(Number(v) * 10) / 10;
+  return PERCENT_PROPS.has(propId) ? num + '%' : String(Math.round(Number(v)));
+}
+
+/* 判重键：套装+部位+主词条+副词条序列 */
+function artifactKey(a) {
+  return [a.setName, a.slot, a.mainStat.key, a.mainStat.value,
+    (a.subStats || []).map(s => s.key + ':' + s.value).join(',')].join('|');
+}
+
+/* 解析 Enka JSON → 系统结构 */
+function parseEnka(text) {
+  let raw;
+  try {
+    raw = JSON.parse(text);
+  } catch (e) {
+    // 容错：用户可能连页面文字一起复制了，截取最外层花括号
+    const s = text.indexOf('{'), t = text.lastIndexOf('}');
+    if (s >= 0 && t > s) {
+      try { raw = JSON.parse(text.slice(s, t + 1)); }
+      catch (e2) { throw new Error('JSON 格式不正确，请确认完整复制了接口返回的全部内容'); }
+    } else {
+      throw new Error('没有找到 JSON 内容，请确认复制的是接口页面的原始数据');
+    }
+  }
+
+  const out = {
+    player: raw.playerInfo ? {
+      nickname: raw.playerInfo.nickname || '(未知)',
+      level: raw.playerInfo.level,
+      uid: raw.uid || '',
+    } : null,
+    chars: [],
+    unknownAvatars: [],
+    unmatchedSets: [],
+  };
+
+  (raw.avatarInfoList || []).forEach(ai => {
+    const av = DATA.AVATAR_MAP[ai.avatarId];
+    const charName = av ? av[0] : null;
+    // 攻略库按名字关联。注意：攻略只覆盖部分角色，但圣遗物照常导入，不受影响
+    const guide = charName ? DATA.CHARACTERS.find(c => c.name === charName) : null;
+    const lv = ai.propMap && ai.propMap['4001'] ? Number(ai.propMap['4001'].val) : null;
+    const cons = (ai.talentIdList || []).length;
+
+    const artifacts = [];
+    (ai.equipList || []).forEach(eq => {
+      const f = eq.flat;
+      if (!f || f.itemType !== 'ITEM_RELIQUARY') return;
+
+      const setName = DATA.SET_ID_MAP[f.setId];
+      if (!setName) {
+        if (!out.unmatchedSets.includes(String(f.setId))) out.unmatchedSets.push(String(f.setId));
+        return;
+      }
+      const main = f.reliquaryMainstat;
+      const slot = DATA.EQUIP_TYPE_MAP[f.equipType];
+      if (!main || !slot) return;
+
+      artifacts.push({
+        setName,
+        slot,
+        level: Math.min(20, (eq.reliquary && eq.reliquary.level) || 0),
+        mainStat: {
+          key: DATA.PROP_MAP[main.mainPropId] || main.mainPropId,
+          value: fmtStat(main.mainPropId, main.statValue),
+        },
+        subStats: (f.reliquarySubstats || []).map(s => ({
+          key: DATA.PROP_MAP[s.appendPropId] || s.appendPropId,
+          value: fmtStat(s.appendPropId, s.statValue),
+        })),
+      });
+    });
+
+    const entry = {
+      avatarId: ai.avatarId,
+      charName: charName || ('未知角色 ' + ai.avatarId),
+      element: av ? av[1] : '',
+      rarity: av ? av[2] : 0,
+      hasGuide: !!guide,
+      level: lv,
+      cons,
+      artifacts,
+    };
+    if (av) out.chars.push(entry);
+    else out.unknownAvatars.push(entry);
+  });
+
+  return out;
+}
+
+function openEnkaImport() {
+  $('#modalBox').innerHTML = `
+    <div class="modal-head">
+      <span>从 Enka 导入角色数据</span>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>第一步：复制数据</label>
+        <div class="hint" style="line-height:1.9">
+          ① 游戏内打开「角色详情 → 角色展柜」，确认已放置角色（最多 8 个）<br>
+          ② 点下方「打开接口」按钮，会新开一个页面<br>
+          ③ 在那页 <b>Ctrl+A 全选</b> → <b>Ctrl+C 复制</b> → 回来粘贴到下面
+        </div>
+      </div>
+      <div class="field">
+        <label>你的 UID（仅本地生成链接，不会上传）</label>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="enkaUid" placeholder="如 618285856" style="flex:1">
+          <button class="btn" id="enkaOpenBtn">打开接口</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>第二步：粘贴 JSON</label>
+        <textarea id="enkaJson" rows="5" placeholder='粘贴以 {"playerInfo": ... 开头的完整内容'
+          style="width:100%;font-family:ui-monospace,Consolas,monospace;font-size:12px;resize:vertical"></textarea>
+      </div>
+      <div id="enkaResult"></div>
+    </div>
+    <div class="modal-foot" id="enkaFoot">
+      <button class="btn" id="modalCancel">取消</button>
+      <button class="btn btn-primary" id="enkaParseBtn">解析预览</button>
+    </div>`;
+
+  $('#modalMask').classList.add('open');
+  $('#modalClose').addEventListener('click', closeModal);
+  $('#modalCancel').addEventListener('click', closeModal);
+  $('#modalMask').addEventListener('click', e => { if (e.target === $('#modalMask')) closeModal(); });
+
+  $('#enkaOpenBtn').addEventListener('click', () => {
+    const uid = $('#enkaUid').value.trim();
+    if (!uid) { alert('请先填写 UID'); return; }
+    window.open('https://enka.network/api/uid/' + encodeURIComponent(uid), '_blank');
+  });
+
+  $('#enkaParseBtn').addEventListener('click', () => {
+    const text = $('#enkaJson').value.trim();
+    if (!text) { alert('请先粘贴 JSON 数据'); return; }
+    try {
+      enkaParsed = parseEnka(text);
+      renderEnkaPreview();
+    } catch (err) {
+      $('#enkaResult').innerHTML = `<div class="slot-box" style="border-color:var(--danger)">
+        <div style="color:var(--danger)">⚠️ ${esc(err.message)}</div></div>`;
+    }
+  });
+}
+
+function renderEnkaPreview() {
+  const r = enkaParsed;
+  const box = $('#enkaResult');
+
+  if (!r.chars.length && !r.unknownAvatars.length) {
+    box.innerHTML = `<div class="slot-box" style="border-color:var(--gold)">
+      <div>⚠️ 没有读到任何角色数据。多半是游戏内「角色展柜」为空。</div>
+      <div class="hint" style="margin-top:6px">请到游戏里把角色放进展柜，等 1~2 分钟后再重新获取。</div>
+    </div>`;
+    return;
+  }
+
+  const existKeys = new Set(state.artifacts.map(artifactKey));
+  let total = 0, dup = 0;
+
+  const charBlocks = r.chars.map((c, ci) => {
+    const items = c.artifacts.map((a, ai) => {
+      const isDup = existKeys.has(artifactKey(a));
+      total++;
+      if (isDup) dup++;
+      const si = SLOT_INFO[a.slot] || {};
+      return `
+        <label style="display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border-light);cursor:pointer">
+          <input type="checkbox" class="enkaChk" data-c="${ci}" data-a="${ai}" ${isDup ? 'disabled' : 'checked'} style="margin-top:3px">
+          <div style="flex:1">
+            <div>${si.icon || ''} <b>${esc(a.setName)}</b> · ${si.label || a.slot} <span class="hint">Lv.${a.level}</span>
+              ${isDup ? '<span class="tag" style="background:var(--gold);color:#fff">已存在</span>' : ''}</div>
+            <div class="hint">主词条 ${esc(a.mainStat.key)} ${esc(a.mainStat.value)}</div>
+            <div class="hint">${a.subStats.map(s => `${esc(s.key)} ${esc(s.value)}`).join(' / ')}</div>
+          </div>
+        </label>`;
+    }).join('');
+
+    return `
+      <div class="slot-box">
+        <div class="slot-label">
+          ${esc(c.charName)}
+          ${c.rarity ? `<span class="rarity" style="color:var(--gold)">${'★'.repeat(c.rarity)}</span>` : ''}
+          <span class="hint">Lv.${c.level || '?'} · ${c.cons}命 · ${c.artifacts.length} 件</span>
+          ${c.hasGuide ? '<span class="tag" style="background:var(--accent);color:#fff">攻略已收录</span>'
+                       : '<span class="tag">攻略未收录</span>'}
+        </div>
+        ${items || '<div class="hint">该角色身上没有可识别的圣遗物</div>'}
+      </div>`;
+  }).join('');
+
+  const unknownHtml = r.unknownAvatars.length ? `
+    <div class="slot-box" style="border-color:var(--border)">
+      <div class="slot-label">数据集中没有的新角色</div>
+      <div class="hint">${r.unknownAvatars.map(c => `avatarId ${c.avatarId}（${c.artifacts.length} 件）`).join('、')}</div>
+      <div class="hint" style="margin-top:4px">这些角色比内置数据集更新。更新 data.js 后即可识别。</div>
+    </div>` : '';
+
+  const unmatchedSetHtml = r.unmatchedSets.length ? `
+    <div class="slot-box" style="border-color:var(--border)">
+      <div class="slot-label">未收录的套装（已跳过）</div>
+      <div class="hint">setId：${r.unmatchedSets.join('、')}</div>
+    </div>` : '';
+
+  const guideCount = r.chars.filter(c => c.hasGuide).length;
+
+  box.innerHTML = `
+    ${r.player ? `<div class="slot-box">
+      <div class="slot-label">${esc(r.player.nickname)} <span class="hint">UID ${esc(r.player.uid)} · 冒险等阶 ${r.player.level}</span></div>
+    </div>` : ''}
+    <div class="hint" style="margin:10px 0">
+      识别到 <b>${r.chars.length}</b> 个角色、共 <b>${total}</b> 件圣遗物
+      ${dup ? `，其中 ${dup} 件已存在（已自动取消勾选）` : ''}<br>
+      其中 ${guideCount} 个角色已有养成攻略，其余暂无攻略但圣遗物照常导入
+    </div>
+    ${charBlocks}
+    ${unknownHtml}
+    ${unmatchedSetHtml}`;
+
+  $('#enkaFoot').innerHTML = `
+    <button class="btn" id="modalCancel2">取消</button>
+    <button class="btn btn-primary" id="enkaDoImport">导入选中的 ${total - dup} 件</button>`;
+  $('#modalCancel2').addEventListener('click', closeModal);
+  $('#enkaDoImport').addEventListener('click', doEnkaImport);
+}
+
+function doEnkaImport() {
+  const checks = $$('.enkaChk').filter(el => el.checked && !el.disabled);
+  if (!checks.length) { alert('没有勾选任何圣遗物'); return; }
+
+  let added = 0;
+  checks.forEach(el => {
+    const c = Number(el.dataset.c), a = Number(el.dataset.a);
+    const src = enkaParsed.chars[c].artifacts[a];
+    state.artifacts.push({
+      id: uid(),
+      setName: src.setName,
+      slot: src.slot,
+      level: src.level,
+      mainStat: { ...src.mainStat },
+      subStats: src.subStats.map(s => ({ ...s })),
+      locked: false,
+    });
+    added++;
+  });
+
+  save();
+  closeModal();
+  renderAll();
+  switchPage('bag');
+  setTimeout(() => alert(`已导入 ${added} 件圣遗物`), 50);
 }
 
 /* ================= 页面：配装推荐引擎 ================= */
@@ -1107,7 +1401,7 @@ function renderSettingsReal() {
     <div class="panel panel-body" style="margin-top:16px">
       <div class="section-title">关于</div>
       <div class="hint" style="line-height:1.8">
-        原神角色养成系统 v2.0<br>
+        原神角色养成系统 v2.0.1<br>
         覆盖角色 ${DATA.CHARACTERS.length} 个 · 圣遗物套装 ${DATA.ARTIFACT_SETS.length} 套 · 武器 ${Object.keys(DATA.WEAPONS).length} 把<br>
         数据基于公开攻略整理，随游戏版本变化，仅供参考<br>
         个人自用工具，与米哈游无关联

@@ -1,0 +1,10 @@
+# 统一换行符处理
+* text=auto
+
+# Shell 脚本必须保持 LF，否则在 Unix / Git Bash 下执行会报 "\r: command not found"
+*.sh text eol=lf
+
+# 图片按二进制处理，不做换行转换
+*.png binary
+*.jpg binary
+*.webp binary
