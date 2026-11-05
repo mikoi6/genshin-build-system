@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>原神角色养成系统</title>
+<style>
+/* ============ 主题变量 ============ */
+:root {
+  --bg: #f5f6f8;
+  --bg-panel: #ffffff;
+  --bg-elevated: #ffffff;
+  --text: #1f2329;
+  --text-secondary: #646a73;
+  --text-tertiary: #8f959e;
+  --border: #e5e6eb;
+  --border-light: #eff0f2;
+  --accent: #4a6cf7;
+  --accent-soft: #eef1fe;
+  --accent-text: #4a6cf7;
+  --gold: #c9a14a;
+  --purple: #9b6cf7;
+  --danger: #e5484d;
+  --danger-soft: #fdecec;
+  --success: #2ba471;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.06);
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+[data-theme="dark"] {
+  --bg: #14161a;
+  --bg-panel: #1e2128;
+  --bg-elevated: #262a33;
+  --text: #e8eaed;
+  --text-secondary: #9aa0a6;
+  --text-tertiary: #6b7280;
+  --border: #30343d;
+  --border-light: #2a2d35;
+  --accent: #6b8afd;
+  --accent-soft: #252c47;
+  --accent-text: #8fa8ff;
+  --gold: #d4af5e;
+  --purple: #ab8cfb;
+  --danger: #f0716f;
+  --danger-soft: #3a2325;
+  --success: #4cc38a;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.4);
+}
+
+/* ============ 元素色 ============ */
+.el-火 { --el: #e0522d; }
+.el-水 { --el: #2f7fd4; }
+.el-风 { --el: #3fb6a6; }
+.el-雷 { --el: #a85fd4; }
+.el-冰 { --el: #6fc7e6; }
+.el-岩 { --el: #c49a3c; }
+.el-草 { --el: #4caf50; }
+
+/* ============ 基础 ============ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 14px;
+}
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; font-size: 14px; color: var(--text); }
+
+/* ============ 顶栏 ============ */
+.app-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.header-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 20px;
+}
+.app-title {
+  font-size: 16px; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+.app-title .logo { font-size: 20px; }
+.app-title small {
+  font-size: 11px; font-weight: 400; color: var(--text-tertiary);
+}
+
+/* ============ 导航 ============ */
+.nav-tabs {
+  display: flex; gap: 4px; overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tab {
+  padding: 8px 14px; border: none; background: transparent;
+  color: var(--text-secondary); font-size: 14px; font-weight: 500;
+  border-radius: var(--radius-sm); white-space: nowrap;
+  transition: all .15s;
+}
+.nav-tab:hover { background: var(--border-light); color: var(--text); }
+.nav-tab.active { background: var(--accent-soft); color: var(--accent-text); font-weight: 600; }
+
+.header-actions { margin-left: auto; display: flex; gap: 8px; }
+.icon-btn {
+  border: 1px solid var(--border); background: var(--bg-panel);
+  color: var(--text-secondary); width: 34px; height: 34px;
+  border-radius: var(--radius-sm); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent-text); }
+
+/* ============ 主容器 ============ */
+.main {
+  max-width: 1100px; margin: 0 auto; padding: 20px;
+  min-height: calc(100vh - 120px);
+}
+.page { display: none; }
+.page.active { display: block; animation: fadeIn .2s; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* ============ 通用组件 ============ */
+.panel {
+  background: var(--bg-panel); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+}
+.panel-body { padding: 16px; }
+.panel-head {
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  font-weight: 600; font-size: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+.hint { color: var(--text-tertiary); font-size: 12px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--bg-panel);
+  color: var(--text); font-size: 14px; font-weight: 500;
+  transition: all .15s;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent-text); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-primary:hover { background: #3f5ce0; color: #fff; }
+.btn-danger { color: var(--danger); border-color: var(--danger); }
+.btn-danger:hover { background: var(--danger-soft); }
+.btn-sm { padding: 4px 10px; font-size: 13px; }
+.btn-block { width: 100%; justify-content: center; }
+
+.tag {
+  display: inline-block; padding: 2px 8px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; background: var(--border-light);
+  color: var(--text-secondary);
+}
+.tag-el { color: #fff; background: var(--el); }
+
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--text-secondary); }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 8px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); background: var(--bg-panel); outline: none;
+  transition: border-color .15s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
+
+.grid { display: grid; gap: 14px; }
+.grid-2 { grid-template-columns: 1fr 1fr; }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 760px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .header-inner { flex-wrap: wrap; }
+}
+
+.search-bar {
+  display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+}
+.search-bar input {
+  flex: 1; min-width: 180px; padding: 9px 12px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-panel); outline: none;
+}
+.search-bar input:focus { border-color: var(--accent); }
+.search-bar select {
+  padding: 9px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); background: var(--bg-panel); outline: none;
+}
+
+.empty-state {
+  text-align: center; padding: 48px 16px; color: var(--text-tertiary);
+}
+.empty-state .icon { font-size: 40px; margin-bottom: 8px; }
+
+/* ============ 角色卡片 ============ */
+.char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.char-card {
+  background: var(--bg-panel); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px; cursor: pointer;
+  transition: all .15s; position: relative; overflow: hidden;
+}
+.char-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--accent); }
+.char-card .char-avatar {
+  width: 100%; aspect-ratio: 1; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px; margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--accent-soft), var(--border-light));
+}
+.char-card .char-name { font-weight: 600; font-size: 14px; }
+.char-card .char-meta { font-size: 12px; color: var(--text-tertiary); display: flex; gap: 6px; align-items: center; }
+.char-card .rarity { color: var(--gold); font-size: 12px; letter-spacing: 1px; }
+
+/* ============ 圣遗物列表 ============ */
+.artifact-list { display: flex; flex-direction: column; gap: 8px; }
+.artifact-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); background: var(--bg-panel);
+}
+.artifact-item .slot-icon { font-size: 22px; width: 36px; text-align: center; }
+.artifact-item .main { flex: 1; min-width: 0; }
+.artifact-item .set-name { font-weight: 600; }
+.artifact-item .subs { font-size: 12px; color: var(--text-secondary); }
+.artifact-item .actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+/* ============ 详情/推荐 ============ */
+.build-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 14px; }
+.build-tab {
+  padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px;
+  background: var(--bg-panel); color: var(--text-secondary); font-size: 13px;
+}
+.build-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.stat-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.stat-table th, .stat-table td {
+  padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border-light);
+}
+.stat-table th { color: var(--text-secondary); font-weight: 500; white-space: nowrap; }
+.stat-table tr:last-child td { border-bottom: none; }
+
+.substat-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.substat-pill {
+  padding: 3px 10px; border-radius: 14px; font-size: 12px;
+  background: var(--accent-soft); color: var(--accent-text);
+}
+.substat-pill.priority-1 { background: var(--accent); color: #fff; }
+.substat-pill.priority-2 { background: var(--accent-soft); color: var(--accent-text); border: 1px solid var(--accent); }
+
+.slot-box {
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 10px; margin-bottom: 8px;
+}
+.slot-box .slot-label { font-weight: 600; margin-bottom: 4px; }
+
+/* ============ 模态框 ============ */
+.modal-mask {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5);
+  display: none; align-items: flex-start; justify-content: center;
+  z-index: 200; padding: 40px 16px; overflow-y: auto;
+}
+.modal-mask.open { display: flex; }
+.modal {
+  background: var(--bg-panel); border-radius: var(--radius);
+  width: 100%; max-width: 560px; box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+}
+.modal-head {
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  font-weight: 600; display: flex; justify-content: space-between; align-items: center;
+}
+.modal-body { padding: 18px; }
+.modal-foot {
+  padding: 14px 18px; border-top: 1px solid var(--border);
+  display: flex; justify-content: flex-end; gap: 10px;
+}
+.modal-close { border: none; background: none; font-size: 20px; color: var(--text-tertiary); line-height: 1; }
+.modal-close:hover { color: var(--text); }
+
+/* ============ 打印 ============ */
+@media print {
+  .app-header, .no-print { display: none !important; }
+  .main { max-width: 100%; padding: 0; }
+  body { background: #fff; }
+  .page { display: none !important; }
+  .page.active { display: block !important; }
+  .panel { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }
+}
+
+/* ============ 页脚 ============ */
+.app-footer {
+  max-width: 1100px; margin: 0 auto; padding: 20px;
+  text-align: center; color: var(--text-tertiary); font-size: 12px;
+  border-top: 1px solid var(--border-light);
+}
+</style>
+</head>
+<body data-theme="light">
+<header class="app-header no-print">
+  <div class="header-inner">
+    <div class="app-title"><span class="logo">⚔️</span> 原神角色养成系统 <small>v2.0</small></div>
+    <nav class="nav-tabs" id="navTabs">
+      <button class="nav-tab active" data-page="characters">角色库</button>
+      <button class="nav-tab" data-page="bag">我的背包</button>
+      <button class="nav-tab" data-page="build">配装推荐</button>
+      <button class="nav-tab" data-page="plan">刷取规划</button>
+      <button class="nav-tab" data-page="settings">设置</button>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="themeToggle" title="昼夜切换">🌙</button>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <!-- 角色库 -->
+  <section class="page active" id="page-characters"></section>
+  <!-- 我的背包 -->
+  <section class="page" id="page-bag"></section>
+  <!-- 配装推荐 -->
+  <section class="page" id="page-build"></section>
+  <!-- 刷取规划 -->
+  <section class="page" id="page-plan"></section>
+  <!-- 设置 -->
+  <section class="page" id="page-settings"></section>
+</main>
+
+<footer class="app-footer no-print">
+  原神角色养成系统 · 个人自用工具 · 数据基于公开攻略整理，与米哈游无关联
+</footer>
+
+<div class="modal-mask" id="modalMask">
+  <div class="modal" id="modalBox"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+/* ================= 数据层 ================= */
+const DATA = window.GENSHIN_DATA || {};
+
+/* ================= 状态 ================= */
+const STORE_KEY = 'genshin_build_system_v2';
+let state = {
+  theme: 'light',
+  artifacts: [],   // 用户录入的圣遗物实例
+};
+
+/* ================= 工具函数 ================= */
+function $(sel, root) { return (root || document).querySelector(sel); }
+function $$(sel, root) { return Array.from((root || document).querySelectorAll(sel)); }
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function uid() { return 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e){} }
+
+/* ================= 初始化 ================= */
+function init() {
+  load();
+  applyTheme();
+  bindNav();
+  bindTheme();
+  renderAll();
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) { const d = JSON.parse(raw); Object.assign(state, d); }
+  } catch(e) {}
+}
+
+function bindNav() {
+  $('#navTabs').addEventListener('click', e => {
+    const tab = e.target.closest('.nav-tab');
+    if (!tab) return;
+    switchPage(tab.dataset.page);
+  });
+}
+
+function switchPage(name) {
+  $$('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.page === name));
+  $$('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + name));
+  window.scrollTo({ top: 0 });
+}
+
+function bindTheme() {
+  $('#themeToggle').addEventListener('click', () => {
+    state.theme = state.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(); save();
+  });
+}
+
+function applyTheme() {
+  document.body.dataset.theme = state.theme;
+  $('#themeToggle').textContent = state.theme === 'dark' ? '☀️' : '🌙';
+}
+
+function renderAll() {
+  renderCharacters();
+  renderBagReal();
+  renderBuildReal();
+  renderPlanReal();
+  renderSettingsReal();
+}
+
+/* ================= 工具：数据查询 ================= */
+function getSet(name) { return DATA.ARTIFACT_SETS.find(s => s.name === name); }
+function getSetById(id) { return DATA.ARTIFACT_SETS.find(s => s.id === id); }
+function getChar(id) { return DATA.CHARACTERS.find(c => c.id === id); }
+function getCharByName(name) { return DATA.CHARACTERS.find(c => c.name === name); }
+
+/* ================= 页面：角色库 ================= */
+let charFilter = { keyword: '', element: '', rarity: '' };
+let selectedCharId = null;
+
+function renderCharacters() {
+  const page = $('#page-characters');
+  // 详情态
+  if (selectedCharId && getChar(selectedCharId)) {
+    renderCharDetail(page);
+    return;
+  }
+  // 列表态
+  let list = DATA.CHARACTERS.filter(c => {
+    if (charFilter.keyword && !c.name.includes(charFilter.keyword)) return false;
+    if (charFilter.element && c.element !== charFilter.element) return false;
+    if (charFilter.rarity && c.rarity !== Number(charFilter.rarity)) return false;
+    return true;
+  });
+
+  const elementOpts = DATA.ELEMENTS.map(e => `<option value="${e}" ${charFilter.element===e?'selected':''}>${e}</option>`).join('');
+  page.innerHTML = `
+    <div class="panel panel-body" style="margin-bottom:16px">
+      <div class="search-bar" style="margin-bottom:0">
+        <input type="text" id="charSearch" placeholder="搜索角色名…" value="${esc(charFilter.keyword)}">
+        <select id="charElement"><option value="">全部元素</option>${elementOpts}</select>
+        <select id="charRarity">
+          <option value="">全部星级</option>
+          <option value="5" ${charFilter.rarity==='5'?'selected':''}>五星</option>
+          <option value="4" ${charFilter.rarity==='4'?'selected':''}>四星</option>
+        </select>
+      </div>
+    </div>
+    <div class="char-grid">
+      ${list.map(c => `
+        <div class="char-card" data-id="${c.id}">
+          <div class="char-avatar" style="background:linear-gradient(135deg,var(--accent-soft),var(--border-light))">${elementIcon(c.element)}</div>
+          <div class="char-name">${esc(c.name)}</div>
+          <div class="char-meta">
+            <span class="tag tag-el el-${c.element}">${c.element}</span>
+            <span class="rarity">${'★'.repeat(c.rarity)}</span>
+          </div>
+          <div class="char-meta" style="margin-top:2px">${esc(c.weapon)}</div>
+        </div>`).join('') || '<div class="empty-state" style="grid-column:1/-1"><div class="icon">🔍</div>没有匹配的角色</div>'}
+    </div>
+    <p class="hint" style="margin-top:14px">共 ${list.length} 个角色 · 点击角色查看配队方案与养成攻略</p>`;
+
+  $('#charSearch').addEventListener('input', e => { charFilter.keyword = e.target.value.trim(); renderCharacters(); });
+  $('#charElement').addEventListener('change', e => { charFilter.element = e.target.value; renderCharacters(); });
+  $('#charRarity').addEventListener('change', e => { charFilter.rarity = e.target.value; renderCharacters(); });
+
+  $$('.char-card', page).forEach(card => {
+    card.addEventListener('click', () => {
+      selectedCharId = card.dataset.id;
+      renderCharacters();
+      window.scrollTo({ top: 0 });
+    });
+  });
+}
+
+/* 记录每个角色当前选中的配队 */
+let charActiveBuild = {};
+
+function elementIcon(el) {
+  const map = { '火':'🔥','水':'💧','风':'🌪️','雷':'⚡','冰':'❄️','岩':'🪨','草':'🌿' };
+  return map[el] || '❔';
+}
+
+function renderCharDetail(page) {
+  const c = getChar(selectedCharId);
+  const builds = c.teamBuilds;
+  let activeBuild = charActiveBuild[c.id] || 0;
+  if (activeBuild >= builds.length) activeBuild = 0;
+  const b = builds[activeBuild];
+
+  page.innerHTML = `
+    <div class="no-print" style="margin-bottom:12px">
+      <button class="btn btn-sm" id="backToList">← 返回角色列表</button>
+    </div>
+    <div class="panel">
+      <div class="panel-body" style="padding-bottom:0">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div class="char-avatar" style="width:64px;height:64px;font-size:32px;flex-shrink:0;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent-soft),var(--border-light))">${elementIcon(c.element)}</div>
+          <div>
+            <div style="font-size:20px;font-weight:700">${esc(c.name)} <span class="tag tag-el el-${c.element}" style="vertical-align:middle">${c.element}</span> <span class="rarity" style="color:var(--gold)">${'★'.repeat(c.rarity)}</span></div>
+            <div class="hint">${esc(c.weapon)} · ${builds.length} 个配队方案</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="build-tabs">
+          ${builds.map((bb, i) => `<button class="build-tab ${i===activeBuild?'active':''}" data-bi="${i}">${esc(bb.name)} <span class="hint">· ${esc(bb.role)}</span></button>`).join('')}
+        </div>
+        ${renderBuildDetail(c, b)}
+      </div>
+    </div>`;
+
+  $('#backToList').addEventListener('click', () => { selectedCharId = null; renderCharacters(); });
+  $$('.build-tab', page).forEach(tab => {
+    tab.addEventListener('click', () => {
+      charActiveBuild[c.id] = Number(tab.dataset.bi);
+      renderCharacters();
+    });
+  });
+}
+
+function renderBuildDetail(c, b) {
+  const setHtml = b.artifact.setIds.map(sn => {
+    const s = getSet(sn);
+    if (!s) return `<span class="substat-pill">${esc(sn)}（数据缺失）</span>`;
+    return `<span class="substat-pill priority-1">${esc(s.name)}</span>`;
+  }).join('');
+
+  const setEffectsHtml = b.artifact.setIds.map(sn => {
+    const s = getSet(sn);
+    if (!s) return '';
+    return `<div class="slot-box">
+      <div class="slot-label">${esc(s.name)} · 套装效果</div>
+      <div class="hint">2件套：${esc(s.effects.two)}</div>
+      <div class="hint">4件套：${esc(s.effects.four)}</div>
+      <div class="hint">掉落：${esc(s.domain)}</div>
+    </div>`;
+  }).join('');
+
+  const subStatsHtml = b.artifact.subStats.map((ss, i) => {
+    const cls = i === 0 ? 'priority-1' : (i === 1 ? 'priority-2' : '');
+    return `<span class="substat-pill ${cls}">${i+1}. ${esc(ss)}</span>`;
+  }).join('');
+
+  const slotLabels = { sands: '时之沙', goblet: '空之杯', circlet: '理之冠' };
+  const mainStatsHtml = Object.entries(b.artifact.mainStats).map(([k, v]) => `
+    <div class="slot-box">
+      <div class="slot-label">${slotLabels[k] || k}</div>
+      <div style="font-weight:600;color:var(--accent-text)">${esc(v)}</div>
+    </div>`).join('');
+
+  const weaponHtml = `
+    <div class="slot-box">
+      <div class="slot-label">主推武器</div>
+      ${b.weapon.primary.map(w => `<div style="margin-bottom:2px"><strong>${esc(w.name)}</strong> ${w.note ? `<span class="hint">· ${esc(w.note)}</span>`:''}</div>`).join('')}
+    </div>
+    <div class="slot-box">
+      <div class="slot-label">备选武器</div>
+      ${b.weapon.alternatives.map(w => `<div style="margin-bottom:2px">${esc(w.name)} ${w.note ? `<span class="hint">· ${esc(w.note)}</span>`:''}</div>`).join('')}
+    </div>`;
+
+  const talentName = { A: '普通攻击', E: '元素战技', Q: '元素爆发' };
+  const talentHtml = `
+    <div class="slot-box">
+      <div class="slot-label">加点优先级</div>
+      <div style="margin-bottom:8px">${b.talents.priority.map((t, i) => `<span class="substat-pill ${i===0?'priority-1':'priority-2'}">${talentName[t]||t}</span>`).join(' <span class="hint">＞</span> ')}</div>
+      <div class="hint">目标等级：${Object.entries(b.talents.goal).map(([k,v]) => `${talentName[k]||k} ${v}`).join(' / ')}</div>
+    </div>`;
+
+  return `
+    <div style="margin-bottom:14px">
+      <div class="section-title" style="margin-bottom:6px">📍 配队与定位</div>
+      <div class="slot-box">
+        <div class="slot-label">定位：<span style="color:var(--accent-text)">${esc(b.role)}</span></div>
+        <div class="hint" style="margin-bottom:4px">配队阵容：</div>
+        <div class="substat-pills">${b.teammates.map(t => `<span class="substat-pill">${esc(t)}</span>`).join('')}</div>
+      </div>
+      <div class="slot-box">
+        <div class="slot-label">配队思路</div>
+        <div style="color:var(--text-secondary)">${esc(b.strategy)}</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:14px">
+      <div class="section-title" style="margin-bottom:6px">🛡️ 圣遗物推荐 <span class="hint">（${esc(b.artifact.type)}）</span></div>
+      <div class="substat-pills" style="margin-bottom:10px">${setHtml}</div>
+      ${setEffectsHtml}
+    </div>
+
+    <div class="grid grid-2" style="margin-bottom:14px">
+      <div>
+        <div class="section-title" style="margin-bottom:6px">🎯 主词条</div>
+        ${mainStatsHtml}
+      </div>
+      <div>
+        <div class="section-title" style="margin-bottom:6px">✨ 副词条优先级</div>
+        <div class="substat-pills">${subStatsHtml}</div>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-bottom:14px">
+      <div>
+        <div class="section-title" style="margin-bottom:6px">⚔️ 武器推荐</div>
+        ${weaponHtml}
+      </div>
+      <div>
+        <div class="section-title" style="margin-bottom:6px">📈 天赋加点</div>
+        ${talentHtml}
+      </div>
+    </div>`;
+}
+
+/* ================= 页面：我的背包 ================= */
+let bagFilter = { set: '', slot: '' };
+const SLOT_INFO = {
+  flower: { label: '生之花', icon: '🌸' },
+  plume: { label: '死之羽', icon: '🪶' },
+  sands: { label: '时之沙', icon: '⏳' },
+  goblet: { label: '空之杯', icon: '🏆' },
+  circlet: { label: '理之冠', icon: '👑' },
+};
+
+function renderBagReal() {
+  const page = $('#page-bag');
+  let list = state.artifacts.filter(a => {
+    if (bagFilter.set && a.setName !== bagFilter.set) return false;
+    if (bagFilter.slot && a.slot !== bagFilter.slot) return false;
+    return true;
+  });
+
+  const setOpts = DATA.ARTIFACT_SETS.map(s => `<option value="${esc(s.name)}" ${bagFilter.set===s.name?'selected':''}>${esc(s.name)}</option>`).join('');
+  const slotOpts = Object.entries(SLOT_INFO).map(([k, v]) => `<option value="${k}" ${bagFilter.slot===k?'selected':''}>${v.label}</option>`).join('');
+
+  page.innerHTML = `
+    <div class="panel panel-body" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+        <div class="section-title" style="margin:0">我的背包 <span class="hint">（${state.artifacts.length} 件）</span></div>
+        <button class="btn btn-primary" id="addArtifact">＋ 录入圣遗物</button>
+      </div>
+      <div class="search-bar" style="margin-bottom:0">
+        <select id="bagSet"><option value="">全部套装</option>${setOpts}</select>
+        <select id="bagSlot"><option value="">全部部位</option>${slotOpts}</select>
+      </div>
+    </div>
+    ${list.length ? `<div class="artifact-list">${list.map(renderArtifactItem).join('')}</div>`
+      : `<div class="panel"><div class="empty-state"><div class="icon">🎒</div>${state.artifacts.length ? '没有匹配的圣遗物' : '还没有录入圣遗物，点上方按钮开始'}</div></div>`}`;
+
+  $('#addArtifact').addEventListener('click', () => openArtifactModal());
+  $('#bagSet').addEventListener('change', e => { bagFilter.set = e.target.value; renderBagReal(); });
+  $('#bagSlot').addEventListener('change', e => { bagFilter.slot = e.target.value; renderBagReal(); });
+
+  $$('.artifact-item', page).forEach(item => {
+    item.querySelector('[data-act="edit"]').addEventListener('click', () => openArtifactModal(item.dataset.id));
+    item.querySelector('[data-act="del"]').addEventListener('click', () => deleteArtifact(item.dataset.id));
+    item.querySelector('[data-act="lock"]').addEventListener('click', () => toggleLock(item.dataset.id));
+  });
+}
+
+function renderArtifactItem(a) {
+  const si = SLOT_INFO[a.slot] || { label: a.slot, icon: '❔' };
+  return `
+    <div class="artifact-item" data-id="${a.id}">
+      <div class="slot-icon">${si.icon}</div>
+      <div class="main">
+        <div class="set-name">${esc(a.setName)} · ${si.label} ${a.locked ? '🔒' : ''}</div>
+        <div class="hint">主词条：<strong style="color:var(--accent-text)">${esc(a.mainStat.key)}</strong> ${esc(a.mainStat.value)} · Lv.${a.level}</div>
+        <div class="subs">${a.subStats.map(s => `${esc(s.key)} ${esc(s.value)}`).join(' / ') || '无副词条'}</div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-sm" data-act="lock">${a.locked ? '解锁' : '锁定'}</button>
+        <button class="btn btn-sm" data-act="edit">编辑</button>
+        <button class="btn btn-sm btn-danger" data-act="del">删除</button>
+      </div>
+    </div>`;
+}
+
+function deleteArtifact(id) {
+  if (!confirm('确定删除这件圣遗物吗？')) return;
+  state.artifacts = state.artifacts.filter(a => a.id !== id);
+  save(); renderBagReal(); refreshDependent();
+}
+
+function toggleLock(id) {
+  const a = state.artifacts.find(x => x.id === id);
+  if (a) { a.locked = !a.locked; save(); renderBagReal(); }
+}
+
+/* ---- 录入/编辑模态框 ---- */
+let editingArtifactId = null;
+let tempSubStats = [];
+
+function openArtifactModal(id) {
+  editingArtifactId = id || null;
+  tempSubStats = [];
+  const a = id ? state.artifacts.find(x => x.id === id) : null;
+  if (a) tempSubStats = JSON.parse(JSON.stringify(a.subStats));
+
+  $('#modalBox').innerHTML = `
+    <div class="modal-head">
+      <span>${a ? '编辑圣遗物' : '录入圣遗物'}</span>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>套装</label>
+        <select id="fSet">${DATA.ARTIFACT_SETS.map(s => `<option value="${esc(s.name)}" ${a&&a.setName===s.name?'selected':''}>${esc(s.name)}</option>`).join('')}</select>
+      </div>
+      <div class="grid grid-2">
+        <div class="field">
+          <label>部位</label>
+          <select id="fSlot">${Object.entries(SLOT_INFO).map(([k,v]) => `<option value="${k}" ${a&&a.slot===k?'selected':''}>${v.label}</option>`).join('')}</select>
+        </div>
+        <div class="field">
+          <label>等级</label>
+          <input type="number" id="fLevel" min="0" max="20" value="${a?a.level:20}">
+        </div>
+      </div>
+      <div class="grid grid-2">
+        <div class="field">
+          <label>主词条</label>
+          <select id="fMainKey"></select>
+        </div>
+        <div class="field">
+          <label>主词条数值</label>
+          <input type="text" id="fMainVal" placeholder="如 46.6%" value="${a?esc(a.mainStat.value):''}">
+        </div>
+      </div>
+      <div class="field">
+        <label>副词条（最多4条，手动填数值）</label>
+        <div id="subList" style="display:flex;flex-direction:column;gap:6px"></div>
+        <button class="btn btn-sm" id="addSub" style="margin-top:6px" ${tempSubStats.length>=4?'disabled':''}>＋ 添加副词条</button>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="modalCancel">取消</button>
+      <button class="btn btn-primary" id="modalSave">保存</button>
+    </div>`;
+
+  $('#modalMask').classList.add('open');
+  bindModalEvents(a);
+  updateMainStatOptions();
+  renderSubStatList();
+}
+
+function bindModalEvents(a) {
+  $('#modalClose').addEventListener('click', closeModal);
+  $('#modalCancel').addEventListener('click', closeModal);
+  $('#modalMask').addEventListener('click', e => { if (e.target === $('#modalMask')) closeModal(); });
+  $('#fSlot').addEventListener('change', updateMainStatOptions);
+  $('#addSub').addEventListener('click', () => {
+    if (tempSubStats.length >= 4) return;
+    tempSubStats.push({ key: DATA.SUBSTAT_KEYS[0], value: '' });
+    renderSubStatList();
+  });
+  $('#modalSave').addEventListener('click', () => saveArtifact());
+}
+
+function updateMainStatOptions() {
+  const slot = $('#fSlot').value;
+  const pool = DATA.MAINSTAT_POOL[slot] || [];
+  const cur = a => a; // 保持当前选中（简化：直接重建）
+  $('#fMainKey').innerHTML = pool.map(k => `<option value="${esc(k)}">${esc(k)}</option>`).join('');
+}
+
+function renderSubStatList() {
+  const box = $('#subList');
+  box.innerHTML = tempSubStats.map((s, i) => `
+    <div style="display:flex;gap:8px;align-items:center">
+      <select data-si="${i}" class="sub-key" style="flex:1">${DATA.SUBSTAT_KEYS.map(k => `<option value="${esc(k)}" ${s.key===k?'selected':''}>${esc(k)}</option>`).join('')}</select>
+      <input type="text" data-si="${i}" class="sub-val" placeholder="数值，如 10.5%" value="${esc(s.value)}" style="flex:1">
+      <button class="btn btn-sm btn-danger" data-si="${i}" class="sub-del">✕</button>
+    </div>`).join('');
+
+  $$('.sub-key', box).forEach(el => el.addEventListener('change', e => { tempSubStats[Number(e.target.dataset.si)].key = e.target.value; }));
+  $$('.sub-val', box).forEach(el => el.addEventListener('input', e => { tempSubStats[Number(e.target.dataset.si)].value = e.target.value; }));
+  $$('.sub-del', box).forEach(el => el.addEventListener('click', e => {
+    tempSubStats.splice(Number(e.target.dataset.si), 1);
+    renderSubStatList();
+    const addBtn = $('#addSub'); if (addBtn) addBtn.disabled = tempSubStats.length >= 4;
+  }));
+  const addBtn = $('#addSub'); if (addBtn) addBtn.disabled = tempSubStats.length >= 4;
+}
+
+function saveArtifact() {
+  const data = {
+    setName: $('#fSet').value,
+    slot: $('#fSlot').value,
+    level: Number($('#fLevel').value) || 0,
+    mainStat: { key: $('#fMainKey').value, value: $('#fMainVal').value.trim() },
+    subStats: tempSubStats.filter(s => s.key && s.value),
+  };
+  if (!data.mainStat.value) { alert('请填写主词条数值'); return; }
+  if (editingArtifactId) {
+    const a = state.artifacts.find(x => x.id === editingArtifactId);
+    Object.assign(a, data);
+  } else {
+    data.id = uid();
+    data.locked = false;
+    state.artifacts.push(data);
+  }
+  save(); closeModal(); renderBagReal(); refreshDependent();
+}
+
+function closeModal() {
+  $('#modalMask').classList.remove('open');
+  $('#modalBox').innerHTML = '';
+  editingArtifactId = null;
+}
+
+/* ================= 页面：配装推荐引擎 ================= */
+let buildSelect = { charId: '', buildIdx: 0 };
+
+function renderBuildReal() {
+  const page = $('#page-build');
+  const charOpts = DATA.CHARACTERS.map(c => `<option value="${c.id}" ${buildSelect.charId===c.id?'selected':''}>${esc(c.name)}（${c.element}）</option>`).join('');
+
+  page.innerHTML = `
+    <div class="panel panel-body" style="margin-bottom:16px">
+      <div class="section-title">配装推荐</div>
+      <p class="hint" style="margin-bottom:12px">选择角色与配队方案，系统从你的背包中匹配最优圣遗物组合（Top3）</p>
+      <div class="search-bar" style="margin-bottom:0">
+        <select id="bChar"><option value="">选择角色…</option>${charOpts}</select>
+        <select id="bBuild"><option value="">选择配队方案…</option></select>
+      </div>
+    </div>
+    <div id="buildResult"></div>`;
+
+  $('#bChar').addEventListener('change', e => {
+    buildSelect.charId = e.target.value;
+    buildSelect.buildIdx = 0;
+    updateBuildSelect();
+    renderBuildReal();
+  });
+  $('#bBuild').addEventListener('change', e => {
+    buildSelect.buildIdx = Number(e.target.value);
+    renderBuildResult();
+  });
+
+  if (buildSelect.charId) {
+    updateBuildSelect();
+    renderBuildResult();
+  }
+}
+
+function updateBuildSelect() {
+  const c = getChar(buildSelect.charId);
+  const sel = $('#bBuild');
+  if (!c) { sel.innerHTML = '<option value="">选择配队方案…</option>'; return; }
+  sel.innerHTML = c.teamBuilds.map((b, i) => `<option value="${i}" ${buildSelect.buildIdx===i?'selected':''}>${esc(b.name)}（${esc(b.role)}）</option>`).join('');
+}
+
+/* ---- 评分与搜索算法 ---- */
+function subStatWeight(build, key) {
+  // 根据副词条优先级表给权重：优先级越高权重越大
+  const idx = build.artifact.subStats.indexOf(key);
+  if (idx === -1) return 0;
+  return Math.max(0, 5 - idx); // 第1优先=5，第2=4，…
+}
+
+function parseNum(s) {
+  const m = String(s).match(/-?\d+(\.\d+)?/);
+  return m ? parseFloat(m[0]) : 0;
+}
+
+function scoreArtifact(a, build) {
+  let score = 0;
+  // 主词条匹配（沙/杯/冠才有主词条推荐）
+  if (build.artifact.mainStats[a.slot]) {
+    const rec = build.artifact.mainStats[a.slot];
+    // 推荐可能是「暴击率/暴击伤害」这种二选一
+    const recList = rec.split('/');
+    if (recList.some(r => a.mainStat.key.includes(r) || r.includes(a.mainStat.key))) {
+      score += 100;
+    }
+  }
+  // 副词条加权
+  a.subStats.forEach(s => {
+    score += subStatWeight(build, s.key) * parseNum(s.value);
+  });
+  // 等级加成（微弱）
+  score += (a.level || 0) * 0.2;
+  return score;
+}
+
+function recommendBuild(c, buildIdx) {
+  const build = c.teamBuilds[buildIdx];
+  const artifacts = state.artifacts;
+  const slots = ['flower', 'plume', 'sands', 'goblet', 'circlet'];
+
+  // 套装要求
+  const reqSets = build.artifact.setIds.map(sn => getSet(sn)?.name || sn);
+  const type = build.artifact.type; // '4件套' | '2+2'
+
+  // 按部位分组，且套装需在推荐集合内
+  const bySlot = {};
+  slots.forEach(s => { bySlot[s] = artifacts.filter(a => a.slot === s && reqSets.includes(a.setName)); });
+
+  // 生成所有组合并评分（件数少，可暴力枚举）
+  // 先对每个部位排序，取 Top 候选
+  const scored = {};
+  slots.forEach(s => {
+    scored[s] = bySlot[s].map(a => ({ a, score: scoreArtifact(a, build) }))
+      .sort((x, y) => y.score - x.score);
+  });
+
+  // 贪心生成多套方案（每套用不同候选，避免重复使用同一件）
+  const plans = [];
+  const used = new Set();
+  for (let p = 0; p < 3; p++) {
+    const plan = { items: [], totalScore: 0, complete: true };
+    slots.forEach(s => {
+      // 从该部位未使用的候选里选最高的
+      const cand = scored[s].find(x => !used.has(x.a.id));
+      if (cand) {
+        plan.items.push(cand.a);
+        plan.totalScore += cand.score;
+        used.add(cand.a.id);
+      } else {
+        plan.complete = false;
+      }
+    });
+    // 计算套装覆盖情况
+    plan.setCoverage = calcSetCoverage(plan.items, reqSets, type);
+    plans.push(plan);
+  }
+  return plans;
+}
+
+function calcSetCoverage(items, reqSets, type) {
+  const count = {};
+  items.forEach(it => { count[it.setName] = (count[it.setName] || 0) + 1; });
+  const detail = reqSets.map(sn => `${sn} ×${count[sn] || 0}`).join('、');
+  return { count, detail };
+}
+
+function renderBuildResult() {
+  const box = $('#buildResult');
+  const c = getChar(buildSelect.charId);
+  if (!c) { box.innerHTML = ''; return; }
+  const b = c.teamBuilds[buildSelect.buildIdx];
+  const plans = recommendBuild(c, buildSelect.buildIdx);
+  const hasArtifacts = state.artifacts.length > 0;
+
+  if (!hasArtifacts) {
+    box.innerHTML = `<div class="panel"><div class="empty-state"><div class="icon">🎒</div>背包为空，请先在「我的背包」录入圣遗物</div></div>`;
+    return;
+  }
+
+  const slotLabels = { flower: '生之花', plume: '死之羽', sands: '时之沙', goblet: '空之杯', circlet: '理之冠' };
+  const plansHtml = plans.map((p, i) => {
+    const rank = ['🥇', '🥈', '🥉'][i];
+    const itemsHtml = p.items.map(it => {
+      const si = SLOT_INFO[it.slot] || {};
+      return `<div style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-light)">
+        <div>${si.icon} ${si.label} · <strong>${esc(it.setName)}</strong> <span class="hint">${esc(it.mainStat.key)} ${esc(it.mainStat.value)}</span></div>
+        <div class="hint" style="white-space:nowrap">${it.subStats.map(s=>`${esc(s.key)}${esc(s.value)}`).join(' ')}</div>
+      </div>`;
+    }).join('');
+
+    return `
+      <div class="panel panel-body" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div class="section-title" style="margin:0">${rank} 方案 ${i+1}</div>
+          <div><span class="hint">套装：</span><span class="substat-pill priority-1">${esc(p.setCoverage.detail)}</span></div>
+        </div>
+        ${p.complete ? itemsHtml : `<div class="empty-state" style="padding:16px"><div class="icon">⚠️</div>部位缺失，无法凑齐5件</div>`}
+        <div class="hint" style="margin-top:8px;text-align:right">综合评分：<strong style="color:var(--accent-text);font-size:16px">${p.totalScore.toFixed(1)}</strong></div>
+      </div>`;
+  }).join('');
+
+  // 目标配装摘要
+  const targetHtml = `
+    <div class="panel panel-body" style="margin-bottom:12px">
+      <div class="section-title" style="margin-bottom:6px">🎯 目标配装（${esc(b.name)}）</div>
+      <div class="hint">套装：${b.artifact.setIds.map(s=>esc(s)).join(' + ')}（${esc(b.artifact.type)}）</div>
+      <div class="hint" style="margin-bottom:6px">主词条：${Object.entries(b.artifact.mainStats).map(([k,v])=>`${slotLabels[k]} ${esc(v)}`).join(' · ')}</div>
+      <div class="hint">副词条优先级：${b.artifact.subStats.map(esc).join(' ＞ ')}</div>
+    </div>`;
+
+  box.innerHTML = targetHtml + plansHtml;
+}
+/* ================= 页面：刷取规划 ================= */
+let planSelect = { charId: '', buildIdx: 0 };
+
+function renderPlanReal() {
+  const page = $('#page-plan');
+  const charOpts = DATA.CHARACTERS.map(c => `<option value="${c.id}" ${planSelect.charId===c.id?'selected':''}>${esc(c.name)}</option>`).join('');
+
+  page.innerHTML = `
+    <div class="panel panel-body" style="margin-bottom:16px">
+      <div class="section-title">刷取规划</div>
+      <p class="hint" style="margin-bottom:12px">对比目标配装与你的背包，找出缺口并给出刷取优先级</p>
+      <div class="search-bar" style="margin-bottom:0">
+        <select id="pChar"><option value="">选择角色…</option>${charOpts}</select>
+        <select id="pBuild"><option value="">选择配队方案…</option></select>
+      </div>
+    </div>
+    <div id="planResult"></div>`;
+
+  $('#pChar').addEventListener('change', e => {
+    planSelect.charId = e.target.value;
+    planSelect.buildIdx = 0;
+    updatePlanBuildSelect();
+    renderPlanReal();
+  });
+  $('#pBuild').addEventListener('change', e => {
+    planSelect.buildIdx = Number(e.target.value);
+    renderPlanResult();
+  });
+
+  if (planSelect.charId) {
+    updatePlanBuildSelect();
+    renderPlanResult();
+  }
+}
+
+function updatePlanBuildSelect() {
+  const c = getChar(planSelect.charId);
+  const sel = $('#pBuild');
+  if (!c) { sel.innerHTML = '<option value="">选择配队方案…</option>'; return; }
+  sel.innerHTML = c.teamBuilds.map((b, i) => `<option value="${i}" ${planSelect.buildIdx===i?'selected':''}>${esc(b.name)}</option>`).join('');
+}
+
+function renderPlanResult() {
+  const box = $('#planResult');
+  const c = getChar(planSelect.charId);
+  if (!c) { box.innerHTML = ''; return; }
+  const b = c.teamBuilds[planSelect.buildIdx];
+  const reqSets = b.artifact.setIds.map(sn => getSet(sn)?.name || sn);
+  const slotLabels = { sands: '时之沙', goblet: '空之杯', circlet: '理之冠' };
+  const artifacts = state.artifacts;
+
+  // 分析缺口
+  const gaps = [];
+  // 1. 套装缺口：是否有可用的推荐套装件
+  reqSets.forEach(sn => {
+    const owned = artifacts.filter(a => a.setName === sn);
+    if (owned.length === 0) {
+      gaps.push({ type: '套装', level: 'high', text: `缺少「${sn}」圣遗物（背包里一件都没有）` });
+    }
+  });
+
+  // 2. 主词条缺口
+  Object.entries(b.artifact.mainStats).forEach(([slot, rec]) => {
+    const recList = rec.split('/');
+    const has = artifacts.some(a => a.slot === slot && recList.some(r => a.mainStat.key.includes(r) || r.includes(a.mainStat.key)));
+    if (!has) {
+      gaps.push({ type: '主词条', level: 'high', text: `缺少「${slotLabels[slot]}」的主词条：${rec}` });
+    }
+  });
+
+  // 3. 副词条提示
+  if (artifacts.length === 0) {
+    gaps.push({ type: '整体', level: 'high', text: '背包为空，建议先刷取目标套装' });
+  }
+
+  const domainHints = reqSets.map(sn => {
+    const s = getSet(sn);
+    return s ? `「${s.name}」→ ${s.domain}` : '';
+  }).filter(Boolean);
+
+  const gapHtml = gaps.length ? gaps.map(g => `
+    <div class="slot-box" style="border-color:${g.level==='high'?'var(--danger)':'var(--border)'}">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="tag" style="${g.level==='high'?'background:var(--danger);color:#fff':''}">${esc(g.type)}</span>
+        <div style="flex:1">${esc(g.text)}</div>
+      </div>
+    </div>`).join('') : `<div class="empty-state"><div class="icon">✅</div>当前背包已满足目标配装要求</div>`;
+
+  const domainHtml = domainHints.length ? `
+    <div class="section-title" style="margin:14px 0 6px">📍 推荐刷取副本</div>
+    ${domainHints.map(d => `<div class="slot-box"><div class="hint" style="margin:0">${esc(d)}</div></div>`).join('')}` : '';
+
+  box.innerHTML = `
+    <div class="panel panel-body">
+      <div class="section-title" style="margin-bottom:6px">缺口分析（${esc(c.name)} · ${esc(b.name)}）</div>
+      <p class="hint" style="margin-bottom:12px">按严重程度排序：先补套装与主词条，再优化副词条</p>
+      ${gapHtml}
+      ${domainHtml}
+    </div>`;
+}
+
+/* ================= 页面：设置 ================= */
+function renderSettingsReal() {
+  const page = $('#page-settings');
+  page.innerHTML = `
+    <div class="panel panel-body" style="margin-bottom:16px">
+      <div class="section-title">数据管理</div>
+      <div class="grid grid-2" style="margin-top:8px">
+        <div>
+          <button class="btn btn-block" id="exportData">⬇️ 导出背包数据（JSON）</button>
+        </div>
+        <div>
+          <button class="btn btn-block" id="importData">⬆️ 导入背包数据</button>
+          <input type="file" id="importFile" accept=".json" style="display:none">
+        </div>
+      </div>
+      <div class="hint" style="margin-top:10px">数据仅保存在浏览器本地（localStorage），换设备/清缓存前请先导出备份</div>
+    </div>
+    <div class="panel panel-body">
+      <div class="section-title">危险操作</div>
+      <button class="btn btn-danger" id="clearData" style="margin-top:8px">🗑️ 清空所有背包数据</button>
+    </div>
+    <div class="panel panel-body" style="margin-top:16px">
+      <div class="section-title">关于</div>
+      <div class="hint" style="line-height:1.8">
+        原神角色养成系统 v2.0<br>
+        覆盖角色 ${DATA.CHARACTERS.length} 个 · 圣遗物套装 ${DATA.ARTIFACT_SETS.length} 套 · 武器 ${Object.keys(DATA.WEAPONS).length} 把<br>
+        数据基于公开攻略整理，随游戏版本变化，仅供参考<br>
+        个人自用工具，与米哈游无关联
+      </div>
+    </div>`;
+
+  $('#exportData').addEventListener('click', exportData);
+  $('#importData').addEventListener('click', () => $('#importFile').click());
+  $('#importFile').addEventListener('change', importData);
+  $('#clearData').addEventListener('click', clearData);
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(state.artifacts, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `原神圣遗物背包_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!Array.isArray(data)) throw new Error('格式错误');
+      if (!confirm(`将导入 ${data.length} 件圣遗物，覆盖还是合并？\n\n确定=合并，取消=覆盖`)) {
+        state.artifacts = data;
+      } else {
+        state.artifacts = state.artifacts.concat(data);
+      }
+      save(); renderAll();
+      alert('导入完成');
+    } catch(err) {
+      alert('导入失败：' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function clearData() {
+  if (!confirm('确定清空所有背包数据吗？此操作不可恢复！')) return;
+  state.artifacts = [];
+  save(); renderAll();
+}
+
+/* ================= 依赖刷新 ================= */
+function refreshDependent() {
+  // 背包变化后，重新渲染推荐与规划结果（保持选中）
+  if (buildSelect.charId && $('#page-build').classList.contains('active')) renderBuildReal();
+  if (planSelect.charId && $('#page-plan').classList.contains('active')) renderPlanReal();
+}
+
+init();
+</script>
+</body>
+</html>
