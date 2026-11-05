@@ -1638,7 +1638,10 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '清风散花词', E: '朝起鹤云', Q: '暮集竹星' },
       conNames: ['借风洗尘缘', '鹤唳远人间', '造化有星月', '奥妙烹黍珠', '旋步霞蔚上', '知是留云僊'],
       desc: '绝云仙众「三眼五显仙人」之一，雅号「留云借风真君」。擅使机关奇术，心向红尘烟火，正以「闲云」之名行走人间。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '魈队', role: '辅助', teammates: ['魈', '珐露珊', '芙宁娜'], strategy: '闲云的核心就业：大招按自身攻击力提升全队下落攻击伤害，正好喂给魈；珐露珊减风抗，芙宁娜全域增伤，三位辅助叠起来给魈的提升最大。', artifact: { setIds: ['昔日宗室之仪', '昔时之歌', '翠绿之影'], type: '4件套', mainStats: { sands: '元素充能效率/攻击%', goblet: '攻击%', circlet: '治疗加成/攻击%' }, subStats: ['元素充能效率', '攻击%'] }, weapon: { primary: [{ name: '鹤鸣余音', note: '专武，攻击力+回能，增伤与循环都最舒服' }], alternatives: [{ name: '证誓之明瞳', note: '四星首选，基本比肩专武，给攻击与充能' }, { name: '天空之卷', note: '白值高，五星替代' }, { name: '西风秘典', note: '产球缓解全队充能，需堆暴击' }] }, talents: { priority: ['Q', 'E', 'A'], goal: { A: 1, E: 8, Q: 8 } }, source: { title: '【V5.5】闲云攻略！', url: 'https://www.miyoushe.com/ys/article/63030779', date: '2025-03-29' } },
+      { name: '嘉明蒸发', role: '辅助', teammates: ['嘉明', '芙宁娜', '班尼特'], strategy: '嘉明下落攻击频繁，吃满闲云的下落增伤；芙宁娜挂水增伤、班尼特补攻击与奶，打出高额蒸发。', artifact: { setIds: ['昔日宗室之仪', '昔时之歌', '翠绿之影'], type: '4件套', mainStats: { sands: '元素充能效率/攻击%', goblet: '攻击%', circlet: '治疗加成/攻击%' }, subStats: ['元素充能效率', '攻击%'] }, weapon: { primary: [{ name: '鹤鸣余音', note: '专武，攻击力+回能，增伤与循环都最舒服' }], alternatives: [{ name: '证誓之明瞳', note: '四星首选，基本比肩专武，给攻击与充能' }, { name: '天空之卷', note: '白值高，五星替代' }, { name: '西风秘典', note: '产球缓解全队充能，需堆暴击' }] }, talents: { priority: ['Q', 'E', 'A'], goal: { A: 1, E: 8, Q: 8 } }, source: { title: '【V5.5】闲云攻略！', url: 'https://www.miyoushe.com/ys/article/63030779', date: '2025-03-29' } }
+    ] },
     { id: 'xiao',
       name: '魈',
       title: '护法夜叉',
