@@ -2,7 +2,7 @@
  * 原神角色养成系统 · 数据层
  * 说明：所有内置数据（角色/套装/武器/词条）均为只读预设，
  *       基于公开攻略整理，随游戏版本变化，此处为制作时点基线。
- * 数据版本：v2.4.0 · 2026-11-05
+ * 数据版本：v2.5.0 · 2026-11-05
  * ============================================================ */
 
 window.GENSHIN_DATA = (function () {
@@ -864,9 +864,9 @@ window.GENSHIN_DATA = (function () {
             ],
             "type": "4件套",
             "mainStats": {
-              "sands": "攻击% / 元素精通",
+              "sands": "攻击%/元素精通",
               "goblet": "火伤加成",
-              "circlet": "暴击率 / 暴击伤害"
+              "circlet": "暴击率/暴击伤害"
             },
             "subStats": [
               "暴击率",
@@ -923,9 +923,9 @@ window.GENSHIN_DATA = (function () {
             ],
             "type": "4件套",
             "mainStats": {
-              "sands": "元素精通 / 攻击%",
+              "sands": "元素精通/攻击%",
               "goblet": "火伤加成",
-              "circlet": "暴击率 / 暴击伤害"
+              "circlet": "暴击率/暴击伤害"
             },
             "subStats": [
               "暴击率",
@@ -1147,7 +1147,7 @@ window.GENSHIN_DATA = (function () {
             "mainStats": {
               "sands": "元素充能效率",
               "goblet": "生命%",
-              "circlet": "暴击率 / 暴击伤害"
+              "circlet": "暴击率/暴击伤害"
             },
             "subStats": [
               "元素充能效率",
@@ -1824,7 +1824,7 @@ window.GENSHIN_DATA = (function () {
             "mainStats": {
               "sands": "攻击%",
               "goblet": "攻击%",
-              "circlet": "暴击率 / 暴击伤害"
+              "circlet": "暴击率/暴击伤害"
             },
             "subStats": [
               "暴击率",
@@ -2273,7 +2273,7 @@ window.GENSHIN_DATA = (function () {
             "mainStats": {
               "sands": "攻击%",
               "goblet": "攻击%",
-              "circlet": "暴击率 / 暴击伤害"
+              "circlet": "暴击率/暴击伤害"
             },
             "subStats": [
               "暴击伤害",
@@ -2325,7 +2325,11 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '迅烈倾霜拳', E: '冰牙突驰', Q: '黑金狼噬' },
       conNames: ['予行恶者以惩惧', '予骄暴者以镣锁', '予婪诈者以谴罚', '予贞苦者以拯赎', '予冤诉者以怜恕', '予无罪者以念抚'],
       desc: '梅洛彼得堡的公爵，隐于漆黑海底的领主。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '星超导', role: '主C', teammates: ['八重神子', '希诺宁', '桑多涅'], strategy: '八重神子后台挂雷稳定触发超导与星超导，希诺宁减抗增伤，桑多涅补足生存；莱欧斯利以 A/Z 组合拳高频附着冰元素。', artifact: { setIds: ['逐影猎人'], type: '4件套', mainStats: { sands: '攻击%/元素精通', goblet: '冰伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素精通'] }, weapon: { primary: [{ name: '金流监督', note: '专武 · 攻674/暴击22.1%，特效提供攻击与伤害加成' }, { name: '图莱杜拉的回忆', note: '攻674/暴伤44.1%，重击增伤' }, { name: '万世流涌大典', note: '攻542/暴伤88.2%，生命+回能' }], alternatives: [{ name: '四风原典', note: '攻608/暴击33.1%，移动速度+元素伤害' }, { name: '流浪乐章', note: '攻510/暴伤55.1%，特效随机增伤' }, { name: '纯水流华', note: '攻565/攻击27.6%，元素伤害加成' }, { name: '万国诸海图谱', note: '锻造，攻565/精通110，元素伤害加成' }] }, talents: null, source: { title: '【月之八】「莱欧斯利」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/76302270', date: '2026-06-28' } },
+      { name: '魔导燃融', role: '主C', teammates: ['尼可', '杜林', '艾梅莉埃'], strategy: '尼可与杜林提供火元素与增伤，艾梅莉埃后台草伤维持燃烧，冰伤队伍走融化增伤路线。', artifact: { setIds: ['逐影猎人'], type: '4件套', mainStats: { sands: '攻击%/元素精通', goblet: '冰伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素精通'] }, weapon: { primary: [{ name: '金流监督', note: '专武 · 攻674/暴击22.1%，特效提供攻击与伤害加成' }, { name: '图莱杜拉的回忆', note: '攻674/暴伤44.1%，重击增伤' }, { name: '万世流涌大典', note: '攻542/暴伤88.2%，生命+回能' }], alternatives: [{ name: '四风原典', note: '攻608/暴击33.1%，移动速度+元素伤害' }, { name: '流浪乐章', note: '攻510/暴伤55.1%，特效随机增伤' }, { name: '纯水流华', note: '攻565/攻击27.6%，元素伤害加成' }, { name: '万国诸海图谱', note: '锻造，攻565/精通110，元素伤害加成' }] }, talents: null, source: { title: '【月之八】「莱欧斯利」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/76302270', date: '2026-06-28' } },
+      { name: '冻结冰伤', role: '主C', teammates: ['爱可菲', '芙宁娜', '申鹤'], strategy: '爱可菲与申鹤提供冰附着与减抗，芙宁娜增伤，冻结控场下稳定输出。', artifact: { setIds: ['逐影猎人'], type: '4件套', mainStats: { sands: '攻击%/元素精通', goblet: '冰伤加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素精通'] }, weapon: { primary: [{ name: '金流监督', note: '专武 · 攻674/暴击22.1%，特效提供攻击与伤害加成' }, { name: '图莱杜拉的回忆', note: '攻674/暴伤44.1%，重击增伤' }, { name: '万世流涌大典', note: '攻542/暴伤88.2%，生命+回能' }], alternatives: [{ name: '四风原典', note: '攻608/暴击33.1%，移动速度+元素伤害' }, { name: '流浪乐章', note: '攻510/暴伤55.1%，特效随机增伤' }, { name: '纯水流华', note: '攻565/攻击27.6%，元素伤害加成' }, { name: '万国诸海图谱', note: '锻造，攻565/精通110，元素伤害加成' }] }, talents: null, source: { title: '【月之八】「莱欧斯利」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/76302270', date: '2026-06-28' } }
+    ] },
     { id: 'lohen',
       name: '洛恩',
       title: '恣锐锋镞',
@@ -2355,7 +2359,11 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '云来古剑法', E: '仙法·寒病鬼差', Q: '仙法·救苦度厄' },
       conNames: ['寒苦回向', '冰寒蚀骨', '升天宝诰', '天威压众', '红莲开绽', '起死回骸'],
       desc: '药庐「不卜庐」的采药姑娘兼学徒，面色苍白如纸的不死之人。话很少，也没有什么表情。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '星超导', role: '治疗', teammates: ['桑多涅', '八重神子', '砂糖'], strategy: '八重神子后台挂雷触发星超导，砂糖聚怪减抗，七七负责治疗并造成额外的星超导伤害。', artifact: { setIds: ['千岩牢固'], type: '4件套', mainStats: { sands: '攻击%/元素充能效率', goblet: '攻击%', circlet: '攻击%' }, subStats: ['元素充能效率', '攻击%', '暴击率'] }, weapon: { primary: [{ name: '苍古自由之誓', note: '精通198，伤害/攻击加成' }, { name: '磐岩结绿', note: '暴击44.1%，生命/攻击加成' }, { name: '天空之刃', note: '充能55.1%，暴击/攻速/伤害' }, { name: '海渊终曲', note: '攻击27.6%，攻击加成' }, { name: '斫峰之刃', note: '攻击49.6%，护盾强效/攻击' }], alternatives: [{ name: '风鹰剑', note: '物伤41.3%，攻击/额外伤害（输出向）' }, { name: '天目影打刀', note: '攻击55.1%，额外回能' }, { name: '西风剑', note: '充能61.3%，暴击额外回能' }, { name: '祭礼剑', note: '充能61.3%，E 概率重置 CD' }] }, talents: null, source: { title: '【月之八】「七七」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/76326299', date: '2026-06-30' } },
+      { name: '星超导', role: '治疗', teammates: ['桑多涅', '八重神子', '希诺宁'], strategy: '希诺宁替代砂糖承担减抗与治疗，双治疗配置更稳，八重神子维持雷附着。', artifact: { setIds: ['千岩牢固'], type: '4件套', mainStats: { sands: '攻击%/元素充能效率', goblet: '攻击%', circlet: '攻击%' }, subStats: ['元素充能效率', '攻击%', '暴击率'] }, weapon: { primary: [{ name: '苍古自由之誓', note: '精通198，伤害/攻击加成' }, { name: '磐岩结绿', note: '暴击44.1%，生命/攻击加成' }, { name: '天空之刃', note: '充能55.1%，暴击/攻速/伤害' }, { name: '海渊终曲', note: '攻击27.6%，攻击加成' }, { name: '斫峰之刃', note: '攻击49.6%，护盾强效/攻击' }], alternatives: [{ name: '风鹰剑', note: '物伤41.3%，攻击/额外伤害（输出向）' }, { name: '天目影打刀', note: '攻击55.1%，额外回能' }, { name: '西风剑', note: '充能61.3%，暴击额外回能' }, { name: '祭礼剑', note: '充能61.3%，E 概率重置 CD' }] }, talents: null, source: { title: '【月之八】「七七」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/76326299', date: '2026-06-30' } },
+      { name: '星超导', role: '治疗', teammates: ['桑多涅', '北斗', '希诺宁'], strategy: '北斗提供雷元素盾与减伤，希诺宁减抗，七七补治疗并覆盖超导反应。', artifact: { setIds: ['千岩牢固'], type: '4件套', mainStats: { sands: '攻击%/元素充能效率', goblet: '攻击%', circlet: '攻击%' }, subStats: ['元素充能效率', '攻击%', '暴击率'] }, weapon: { primary: [{ name: '苍古自由之誓', note: '精通198，伤害/攻击加成' }, { name: '磐岩结绿', note: '暴击44.1%，生命/攻击加成' }, { name: '天空之刃', note: '充能55.1%，暴击/攻速/伤害' }, { name: '海渊终曲', note: '攻击27.6%，攻击加成' }, { name: '斫峰之刃', note: '攻击49.6%，护盾强效/攻击' }], alternatives: [{ name: '风鹰剑', note: '物伤41.3%，攻击/额外伤害（输出向）' }, { name: '天目影打刀', note: '攻击55.1%，额外回能' }, { name: '西风剑', note: '充能61.3%，暴击额外回能' }, { name: '祭礼剑', note: '充能61.3%，E 概率重置 CD' }] }, talents: null, source: { title: '【月之八】「七七」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/76326299', date: '2026-06-30' } }
+    ] },
     { id: 'citlali',
       name: '茜特菈莉',
       title: '白星黑曜',
@@ -2550,7 +2558,7 @@ window.GENSHIN_DATA = (function () {
             "mainStats": {
               "sands": "攻击%",
               "goblet": "冰伤加成",
-              "circlet": "暴击率 / 暴击伤害"
+              "circlet": "暴击率/暴击伤害"
             },
             "subStats": [
               "暴击率",
@@ -2609,7 +2617,11 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '西风剑术·宗室', E: '冰潮的涡旋', Q: '凝浪之光剑' },
       conNames: ['光潮的幻象', '海沫的少女', '劳伦斯的血脉', '自卑者的逞强', '骑士的素质', '高贵者的义务'],
       desc: '古老家族出身的「浪花骑士」，西风骑士团游击小队队长。身为旧贵族后裔却加入了堪称死对头的西风骑士团，该事件至今仍是蒙德一大谜团。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '物理超导', role: '主C', teammates: ['雷电将军', '米卡', '罗莎莉亚'], strategy: '雷电将军挂雷触发超导减物抗，米卡提供攻速与物理增伤，罗莎莉亚补暴击率，优菈靠光降之剑爆发。', artifact: { setIds: ['苍白之火'], type: '4件套', mainStats: { sands: '攻击%', goblet: '物理伤害加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '松籁响起之时', note: '专武 · 攻741/物伤20.7%，攻击+全体攻速' }, { name: '狼的武功歌', note: '攻608/暴击33.1%，攻速/暴伤' }, { name: '苇海信标', note: '攻608/暴击33.1%，攻击/生命加成' }, { name: '螭骨剑', note: '攻510/暴击27.6%，叠加伤害加成' }, { name: '狼的末路', note: '攻608/攻击49.6%，攻击+全队加攻' }], alternatives: [{ name: '无工之剑', note: '攻击49.6%，护盾强效/攻击' }, { name: '赤角石溃杵', note: '暴伤88.2%，防御/A/Z 伤害' }, { name: '天空之傲', note: '充能36.8%，伤害/附加伤害' }, { name: '雪葬的星银', note: '物伤34.5%，A/Z 附加伤害' }] }, talents: null, source: { title: '【月之五】「优菈」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/73861985', date: '2026-03-10' } },
+      { name: '物理超导', role: '主C', teammates: ['雷电将军', '芙宁娜', '米卡'], strategy: '芙宁娜以生命浮动增伤，搭配米卡的攻速和雷神挂雷，超导减抗后打出更高层数的光降之剑。', artifact: { setIds: ['苍白之火'], type: '4件套', mainStats: { sands: '攻击%', goblet: '物理伤害加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '松籁响起之时', note: '专武 · 攻741/物伤20.7%，攻击+全体攻速' }, { name: '狼的武功歌', note: '攻608/暴击33.1%，攻速/暴伤' }, { name: '苇海信标', note: '攻608/暴击33.1%，攻击/生命加成' }, { name: '螭骨剑', note: '攻510/暴击27.6%，叠加伤害加成' }, { name: '狼的末路', note: '攻608/攻击49.6%，攻击+全队加攻' }], alternatives: [{ name: '无工之剑', note: '攻击49.6%，护盾强效/攻击' }, { name: '赤角石溃杵', note: '暴伤88.2%，防御/A/Z 伤害' }, { name: '天空之傲', note: '充能36.8%，伤害/附加伤害' }, { name: '雪葬的星银', note: '物伤34.5%，A/Z 附加伤害' }] }, talents: null, source: { title: '【月之五】「优菈」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/73861985', date: '2026-03-10' } },
+      { name: '物理超导', role: '主C', teammates: ['菲谢尔', '米卡', '班尼特'], strategy: '菲谢尔后台持续挂雷维持超导，米卡与班尼特补攻速、攻击与治疗，没有雷神时的替代方案。', artifact: { setIds: ['苍白之火'], type: '4件套', mainStats: { sands: '攻击%', goblet: '物理伤害加成', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '松籁响起之时', note: '专武 · 攻741/物伤20.7%，攻击+全体攻速' }, { name: '狼的武功歌', note: '攻608/暴击33.1%，攻速/暴伤' }, { name: '苇海信标', note: '攻608/暴击33.1%，攻击/生命加成' }, { name: '螭骨剑', note: '攻510/暴击27.6%，叠加伤害加成' }, { name: '狼的末路', note: '攻608/攻击49.6%，攻击+全队加攻' }], alternatives: [{ name: '无工之剑', note: '攻击49.6%，护盾强效/攻击' }, { name: '赤角石溃杵', note: '暴伤88.2%，防御/A/Z 伤害' }, { name: '天空之傲', note: '充能36.8%，伤害/附加伤害' }, { name: '雪葬的星银', note: '物伤34.5%，A/Z 附加伤害' }] }, talents: null, source: { title: '【月之五】「优菈」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/73861985', date: '2026-03-10' } }
+    ] },
     { id: 'diona',
       name: '迪奥娜',
       title: '猫尾特调',
@@ -2765,7 +2777,7 @@ window.GENSHIN_DATA = (function () {
             ],
             "type": "4件套",
             "mainStats": {
-              "sands": "防御% / 元素充能效率",
+              "sands": "防御%/元素充能效率",
               "goblet": "防御%",
               "circlet": "暴击伤害"
             },
@@ -2861,7 +2873,11 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '锐锋攫猎', E: '音火锻淬', Q: '豹烈律动！' },
       conNames: ['献予慵眠的休假日', '献予灼原的五重奏', '献予日炎的巡行式', '献予午后的花之梦', '献予夕暮的转格调', '献予永夜的狂欢舞'],
       desc: '纳茨卡延的铸名师，善于在工作的重担与舒适的生活之间找到平衡点。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '纳塔战舰[融化]', role: '辅助', teammates: ['玛薇卡', '茜特菈莉', '班尼特'], strategy: '希诺宁提供岩元素减抗并兼顾治疗，玛薇卡主输出，茜特菈莉与班尼特补融化与增益。', artifact: { setIds: ['烬城勇者绘卷'], type: '4件套', mainStats: { sands: '元素充能效率/防御%', goblet: '防御%', circlet: '治疗加成/防御%' }, subStats: ['元素充能效率', '防御%', '暴击率'] }, weapon: { primary: [{ name: '岩峰巡歌', note: '专武 · 攻542/防御82.7%，防御+元素增伤' }, { name: '西风剑', note: '充能61.3%，暴击额外回能（堆30%暴击）' }, { name: '苍古自由之誓', note: '精通198，伤害/攻击加成' }, { name: '息燧之笛', note: '防御69%，防御加成' }, { name: '辰砂之纺锤', note: '防御69%，E 伤害加成' }], alternatives: [{ name: '天空之刃', note: '充能55.1%，暴击/攻速/伤害' }, { name: '灰河渡手', note: '充能45.9%，E 暴击/元素加成' }, { name: '有乐御簾切', note: '暴伤88.2%，A/E 伤害与防御' }, { name: '雾切之回光', note: '暴伤44.1%，元素伤害加成' }] }, talents: null, source: { title: '【月之三】「希诺宁」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/71693771', date: '2025-12-22' } },
+      { name: '水伤直伤', role: '辅助', teammates: ['那维莱特', '芙宁娜', '枫原万叶'], strategy: '那维莱特主C，万叶聚怪增伤、芙宁娜增伤，希诺宁减抗并稳定血线。', artifact: { setIds: ['烬城勇者绘卷'], type: '4件套', mainStats: { sands: '元素充能效率/防御%', goblet: '防御%', circlet: '治疗加成/防御%' }, subStats: ['元素充能效率', '防御%', '暴击率'] }, weapon: { primary: [{ name: '岩峰巡歌', note: '专武 · 攻542/防御82.7%，防御+元素增伤' }, { name: '西风剑', note: '充能61.3%，暴击额外回能（堆30%暴击）' }, { name: '苍古自由之誓', note: '精通198，伤害/攻击加成' }, { name: '息燧之笛', note: '防御69%，防御加成' }, { name: '辰砂之纺锤', note: '防御69%，E 伤害加成' }], alternatives: [{ name: '天空之刃', note: '充能55.1%，暴击/攻速/伤害' }, { name: '灰河渡手', note: '充能45.9%，E 暴击/元素加成' }, { name: '有乐御簾切', note: '暴伤88.2%，A/E 伤害与防御' }, { name: '雾切之回光', note: '暴伤44.1%，元素伤害加成' }] }, talents: null, source: { title: '【月之三】「希诺宁」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/71693771', date: '2025-12-22' } },
+      { name: '火伤直伤', role: '辅助', teammates: ['阿蕾奇诺', '枫原万叶', '班尼特'], strategy: '阿蕾奇诺主C，班尼特与万叶提供攻击和增伤，希诺宁减抗+治疗维持输出环境。', artifact: { setIds: ['烬城勇者绘卷'], type: '4件套', mainStats: { sands: '元素充能效率/防御%', goblet: '防御%', circlet: '治疗加成/防御%' }, subStats: ['元素充能效率', '防御%', '暴击率'] }, weapon: { primary: [{ name: '岩峰巡歌', note: '专武 · 攻542/防御82.7%，防御+元素增伤' }, { name: '西风剑', note: '充能61.3%，暴击额外回能（堆30%暴击）' }, { name: '苍古自由之誓', note: '精通198，伤害/攻击加成' }, { name: '息燧之笛', note: '防御69%，防御加成' }, { name: '辰砂之纺锤', note: '防御69%，E 伤害加成' }], alternatives: [{ name: '天空之刃', note: '充能55.1%，暴击/攻速/伤害' }, { name: '灰河渡手', note: '充能45.9%，E 暴击/元素加成' }, { name: '有乐御簾切', note: '暴伤88.2%，A/E 伤害与防御' }, { name: '雾切之回光', note: '暴伤44.1%，元素伤害加成' }] }, talents: null, source: { title: '【月之三】「希诺宁」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/71693771', date: '2025-12-22' } }
+    ] },
     { id: 'zibai',
       name: '兹白',
       title: '驹隙隐泉',
@@ -2996,7 +3012,11 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '呲牙裂扇箭', E: '犬坂吠吠方圆阵', Q: '兽牙逐突形胜战法' },
       conNames: ['犬奔·疾如风', '犬坐·稳如钟', '犬爪·势如火', '犬舐·温如水', '犬突·动如雷', '犬勇·忠如山'],
       desc: '海祇岛军的大将，深受部下信赖。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '月曜结晶', role: '辅助', teammates: ['兹白', '哥伦比娅', '叶洛亚'], strategy: '围绕月曜结晶反应组建，五郎把岩伤与防御加成集中给主C，兹白与叶洛亚承担输出。', artifact: { setIds: ['流放者'], type: '4件套', mainStats: { sands: '元素充能效率', goblet: '防御%', circlet: '暴击率/治疗加成' }, subStats: ['元素充能效率', '防御%', '暴击率'] }, weapon: { primary: [{ name: '西风猎弓', note: '充能61.3%，暴击额外回能' }, { name: '终末嗟叹之诗', note: '充能55.1%，精通/攻击加成' }, { name: '祭礼弓', note: '充能30.6%，E 概率刷新冷却' }, { name: '竭泽', note: '充能45.9%，额外伤害' }, { name: '落霞', note: '充能30.6%，额外伤害' }], alternatives: [] }, talents: null, source: { title: '【月之四】「五郎」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/72730171', date: '2026-01-27' } },
+      { name: '月曜结晶', role: '辅助', teammates: ['荒泷一斗', '哥伦比娅', '千织'], strategy: '荒泷一斗吃满五郎的岩伤与防御加成，千织后台补岩伤，哥伦比娅触发月结晶反应。', artifact: { setIds: ['流放者'], type: '4件套', mainStats: { sands: '元素充能效率', goblet: '防御%', circlet: '暴击率/治疗加成' }, subStats: ['元素充能效率', '防御%', '暴击率'] }, weapon: { primary: [{ name: '西风猎弓', note: '充能61.3%，暴击额外回能' }, { name: '终末嗟叹之诗', note: '充能55.1%，精通/攻击加成' }, { name: '祭礼弓', note: '充能30.6%，E 概率刷新冷却' }, { name: '竭泽', note: '充能45.9%，额外伤害' }, { name: '落霞', note: '充能30.6%，额外伤害' }], alternatives: [] }, talents: null, source: { title: '【月之四】「五郎」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/72730171', date: '2026-01-27' } },
+      { name: '纯岩直伤', role: '辅助', teammates: ['荒泷一斗', '千织', '钟离'], strategy: '钟离护盾减抗、千织后台输出，五郎负责把岩伤与防御加成堆到主C身上。', artifact: { setIds: ['流放者'], type: '4件套', mainStats: { sands: '元素充能效率', goblet: '防御%', circlet: '暴击率/治疗加成' }, subStats: ['元素充能效率', '防御%', '暴击率'] }, weapon: { primary: [{ name: '西风猎弓', note: '充能61.3%，暴击额外回能' }, { name: '终末嗟叹之诗', note: '充能55.1%，精通/攻击加成' }, { name: '祭礼弓', note: '充能30.6%，E 概率刷新冷却' }, { name: '竭泽', note: '充能45.9%，额外伤害' }, { name: '落霞', note: '充能30.6%，额外伤害' }], alternatives: [] }, talents: null, source: { title: '【月之四】「五郎」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/72730171', date: '2026-01-27' } }
+    ] },
     { id: 'illuga',
       name: '叶洛亚',
       title: '魇夜燃芯',
@@ -3041,7 +3061,11 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '逐影枪术·改', E: '撷萃调香', Q: '香氛演绎' },
       conNames: ['淡香浸析', '湖光顶调', '郁馥臻萃', '柔灯心韵', '纯露凝芳', '茉洁香迹'],
       desc: '枫丹香水设计师，将秘密藏于瓶中之人。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '燃烧增幅', role: '副C', teammates: ['基尼奇', '香菱', '班尼特'], strategy: '香菱与班尼特点燃并增伤，基尼奇主C，艾梅莉埃靠柔灯之匣持续后台草伤并吃满燃烧增伤。', artifact: { setIds: ['未竟的遐思'], type: '4件套', mainStats: { sands: '攻击%', goblet: '草伤加成/攻击%', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '柔灯挽歌', note: '专武 · 攻608/暴击33.1%，攻击/暴伤/回能' }, { name: '息灾', note: '攻741/攻击16.5%，攻击/元素伤害' }, { name: '支离轮光', note: '攻608/暴伤66.2%，攻击/月感电加成' }, { name: '赤沙之杖', note: '攻542/暴击44.1%，精通转攻击加成' }], alternatives: [{ name: '护摩之杖', note: '攻608/暴伤66.2%，生命/攻击加成' }, { name: '决斗之枪', note: '攻454/暴击36.8%，攻击/防御加成' }, { name: '贯虹之槊', note: '攻击49.6%，护盾强效/攻击' }, { name: '风信之锋', note: '攻510/攻击41.3%，攻击/精通加成' }] }, talents: null, source: { title: '【月之六】「艾梅莉埃」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/74340680', date: '2026-04-02' } },
+      { name: '燃烧增幅', role: '副C', teammates: ['阿蕾奇诺', '钟离', '班尼特'], strategy: '阿蕾奇诺主C，钟离护盾减抗、班尼特增伤并点燃，艾梅莉埃后台维持燃烧与草伤。', artifact: { setIds: ['未竟的遐思'], type: '4件套', mainStats: { sands: '攻击%', goblet: '草伤加成/攻击%', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '柔灯挽歌', note: '专武 · 攻608/暴击33.1%，攻击/暴伤/回能' }, { name: '息灾', note: '攻741/攻击16.5%，攻击/元素伤害' }, { name: '支离轮光', note: '攻608/暴伤66.2%，攻击/月感电加成' }, { name: '赤沙之杖', note: '攻542/暴击44.1%，精通转攻击加成' }], alternatives: [{ name: '护摩之杖', note: '攻608/暴伤66.2%，生命/攻击加成' }, { name: '决斗之枪', note: '攻454/暴击36.8%，攻击/防御加成' }, { name: '贯虹之槊', note: '攻击49.6%，护盾强效/攻击' }, { name: '风信之锋', note: '攻510/攻击41.3%，攻击/精通加成' }] }, talents: null, source: { title: '【月之六】「艾梅莉埃」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/74340680', date: '2026-04-02' } },
+      { name: '燃蒸双核', role: '副C', teammates: ['芙宁娜', '香菱', '班尼特'], strategy: '芙宁娜增伤并挂水，香菱点燃维持燃烧，艾梅莉埃与芙宁娜形成蒸发双核输出。', artifact: { setIds: ['未竟的遐思'], type: '4件套', mainStats: { sands: '攻击%', goblet: '草伤加成/攻击%', circlet: '暴击率/暴击伤害' }, subStats: ['暴击率', '暴击伤害', '攻击%', '元素充能效率'] }, weapon: { primary: [{ name: '柔灯挽歌', note: '专武 · 攻608/暴击33.1%，攻击/暴伤/回能' }, { name: '息灾', note: '攻741/攻击16.5%，攻击/元素伤害' }, { name: '支离轮光', note: '攻608/暴伤66.2%，攻击/月感电加成' }, { name: '赤沙之杖', note: '攻542/暴击44.1%，精通转攻击加成' }], alternatives: [{ name: '护摩之杖', note: '攻608/暴伤66.2%，生命/攻击加成' }, { name: '决斗之枪', note: '攻454/暴击36.8%，攻击/防御加成' }, { name: '贯虹之槊', note: '攻击49.6%，护盾强效/攻击' }, { name: '风信之锋', note: '攻510/攻击41.3%，攻击/精通加成' }] }, talents: null, source: { title: '【月之六】「艾梅莉埃」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/74340680', date: '2026-04-02' } }
+    ] },
     { id: 'baizhu',
       name: '白术',
       title: '遵生合和',
@@ -3161,7 +3185,11 @@ window.GENSHIN_DATA = (function () {
       skills: { A: '箱纸切削术', E: '呜喵町飞足', Q: '秘法·惊喜特派' },
       conNames: ['物器流转', '八尖裹术', '万户门牌通识', '韦驮骏足', '千里一日', '沿途百景会心'],
       desc: '稻妻快递公司「狛荷屋」的送货员，一只热爱自己工作、向往人类社会的「猫又」。',
-      teamBuilds: [] },
+      teamBuilds: [
+      { name: '超激绽', role: '盾辅', teammates: ['克洛琳德', '纳西妲', '行秋'], strategy: '纳西妲挂草、行秋挂水生成草原核，克洛琳德雷伤同时打出超激化与超绽放，绮良良提供护盾与草附着。', artifact: { setIds: ['花海甘露之光', '千岩牢固'], type: '2+2', mainStats: { sands: '生命%', goblet: '生命%', circlet: '生命%' }, subStats: ['生命%', '元素充能效率', '暴击率'] }, weapon: { primary: [{ name: '圣显之钥', note: '生命66.2%，生命/精通加成' }, { name: '船坞长剑', note: '攻击41.3%，精通/回能加成' }, { name: '磐岩结绿', note: '暴击44.1%，生命/攻击加成' }, { name: '苍古自由之誓', note: '精通198，伤害/攻击加成' }, { name: '祭礼剑', note: '充能61.3%，E 概率重置 CD' }], alternatives: [{ name: '西风剑', note: '充能61.3%，暴击额外回能' }, { name: '原木刀', note: '充能30.6%，精通加成' }] }, talents: null, source: { title: '【月之六】「绮良良」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/75118187', date: '2026-05-03' } },
+      { name: '超激化', role: '盾辅', teammates: ['克洛琳德', '希诺宁', '菲谢尔'], strategy: '菲谢尔后台挂雷与克洛琳德组成超激化，希诺宁减抗，绮良良负责护盾与草元素来源。', artifact: { setIds: ['花海甘露之光', '千岩牢固'], type: '2+2', mainStats: { sands: '生命%', goblet: '生命%', circlet: '生命%' }, subStats: ['生命%', '元素充能效率', '暴击率'] }, weapon: { primary: [{ name: '圣显之钥', note: '生命66.2%，生命/精通加成' }, { name: '船坞长剑', note: '攻击41.3%，精通/回能加成' }, { name: '磐岩结绿', note: '暴击44.1%，生命/攻击加成' }, { name: '苍古自由之誓', note: '精通198，伤害/攻击加成' }, { name: '祭礼剑', note: '充能61.3%，E 概率重置 CD' }], alternatives: [{ name: '西风剑', note: '充能61.3%，暴击额外回能' }, { name: '原木刀', note: '充能30.6%，精通加成' }] }, talents: null, source: { title: '【月之六】「绮良良」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/75118187', date: '2026-05-03' } },
+      { name: '绽放', role: '盾辅', teammates: ['纳西妲', '妮露', '珊瑚宫心海'], strategy: '妮露把草原核转为丰穰之核，纳西妲挂草、心海治疗并挂水，绮良良补盾与草附着。', artifact: { setIds: ['花海甘露之光', '千岩牢固'], type: '2+2', mainStats: { sands: '生命%', goblet: '生命%', circlet: '生命%' }, subStats: ['生命%', '元素充能效率', '暴击率'] }, weapon: { primary: [{ name: '圣显之钥', note: '生命66.2%，生命/精通加成' }, { name: '船坞长剑', note: '攻击41.3%，精通/回能加成' }, { name: '磐岩结绿', note: '暴击44.1%，生命/攻击加成' }, { name: '苍古自由之誓', note: '精通198，伤害/攻击加成' }, { name: '祭礼剑', note: '充能61.3%，E 概率重置 CD' }], alternatives: [{ name: '西风剑', note: '充能61.3%，暴击额外回能' }, { name: '原木刀', note: '充能30.6%，精通加成' }] }, talents: null, source: { title: '【月之六】「绮良良」丨图解养成攻略', url: 'https://www.miyoushe.com/ys/article/75118187', date: '2026-05-03' } }
+    ] },
     { id: 'yaoyao',
       name: '瑶瑶',
       title: '仙蕊玲珑',
